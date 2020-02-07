@@ -1,6 +1,8 @@
 POST /user:id            logs into the specified user
 POST /user:logout        logs the current user out
 POST /user/register:id   makes a new user with the specified username
+GET  /user/favourites    get list of favourited maps
+GET  /user/owned         get lists of owned maps
 
 GET  /maps:id            returns and displays the specified map
 POST /maps/new:id        creates a new map with the specified title
