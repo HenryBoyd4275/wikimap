@@ -1,0 +1,10 @@
+POST /user:id            logs into the specified user
+POST /user:logout        logs the current user out
+POST /user/register:id   makes a new user with the specified username
+
+GET  /maps:id            returns and displays the specified map
+POST /maps/new:id        creates a new map with the specified title
+POST /maps/id:destroy    deletes the specified map
+POST /maps/point:add     adds a new point to the current map
+POST /maps/point:remove  deletes the specified point
+POST /maps/point:edit    changes the values of the speficied point
