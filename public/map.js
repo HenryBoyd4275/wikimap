@@ -45,6 +45,11 @@ function initMap() {
 }
 
 
+function test(){
+  console.log('called from index.ejs')
+}
+
+
 
 //// add point does not currently work.
 

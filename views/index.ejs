@@ -19,9 +19,10 @@
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
       crossorigin="anonymous"
     ></script>
-
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+    <script type="text/javascript" src="map.js"></script>
+
   </head>
 
   <body>
@@ -37,8 +38,7 @@
         <p><%= element.lat %></p>
         <p><%= element.lng %></p>
 
-
-      <%}%>
+      <%}   %>
     </p>
 
 
@@ -52,6 +52,5 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkZfmqKkpE43LJna1yRLRV7FIrrd874TY&callback=initMap"
     ></script>
-    <script type="text/javascript" src="map.js"></script>
   </body>
 </html>
