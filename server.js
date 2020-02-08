@@ -1,6 +1,10 @@
 // load .env data into process.env
 require('dotenv').config();
 
+
+const database = require('./routes/db_queries');
+
+
 // Web server config
 const PORT       = process.env.PORT || 8080;
 const ENV        = process.env.ENV || "development";
@@ -47,7 +51,41 @@ app.use("/api/widgets", widgetsRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  res.render("index");
+
+
+
+//// coords, will return an ARRAY with OBJ points
+/// we need to LOOP though the array and pull the coordinates out of the OBJ and pass them into a
+// function that will crate a point on the map ???
+
+  database.getMapPoints(1)    //1 is the default map we load on pg visit
+  .then(coords=> {
+    console.log(coords)
+
+    let arrOfPoints=[]
+
+    for (element of coords){
+      let coordsOfPoint={
+        lat:element.lat,
+        lng:element.lng
+      }
+
+      console.log(coordsOfPoint, 'asdfasdfasdfasdf')
+      arrOfPoints.push(coordsOfPoint)
+    }
+
+
+    let pass2FrontEnd = {arrOfPoints}
+
+    console.log(pass2FrontEnd, 'passing to front')
+    res.render("index", pass2FrontEnd);   //trying to pass to front end.
+
+
+
+  })
+
+
+
 });
 
 app.listen(PORT, () => {

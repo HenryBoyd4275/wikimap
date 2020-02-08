@@ -10,6 +10,9 @@ const router  = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
+
+    console.log('//// route')
+
     let query = `SELECT * FROM widgets`;
     console.log(query);
     db.query(query)
@@ -23,5 +26,8 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
   return router;
+
+
 };
