@@ -1,3 +1,10 @@
+$('document').ready(function(){
+
+  initMap();
+});
+
+
+
 var map; //global variable
 
   function initMap() {
@@ -33,3 +40,11 @@ var map; //global variable
   }
 
 
+//add text box on click
+  // let lhlInfo = new google.maps.InfoWindow({
+  //   content: "<h3>Light House Labs</h3>"
+  // });
+
+  // marker.addListener("click", function() {
+  //   lhlInfo.open(map, marker);
+  // });
