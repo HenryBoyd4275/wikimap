@@ -78,6 +78,7 @@ app.get("/", (req, res) => {
     let pass2FrontEnd = {arrOfPoints}
 
     console.log(pass2FrontEnd, 'passing to front')
+
     res.render("index", pass2FrontEnd);   //trying to pass to front end.
 
 

@@ -31,26 +31,36 @@
     </header>
 
 
-
-    <p>
-      <% for(element of arrOfPoints) {%>
-
-        <p><%= element.lat %></p>
-        <p><%= element.lng %></p>
-
-      <%}   %>
-    </p>
-
-
     <h1>My Map</h1>
+
+  <P>
+
+<% for(element of arrOfPoints) {%>
+<p><%= element.lat %>  <%= element.lng %></p>
+
+<script>
+  setTimeout(function(){
+    createMarker(<%-JSON.stringify(element)%>)
+    }, 500);
+</script>
+<%} %>
+
+  </P>
+
+
+
 
     <div id="map">
       <!-- map goes here -->
     </div>
+
+
+
     <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkZfmqKkpE43LJna1yRLRV7FIrrd874TY&callback=initMap"
+    async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkZfmqKkpE43LJna1yRLRV7FIrrd874TY&callback=initMap"
     ></script>
+
   </body>
 </html>
