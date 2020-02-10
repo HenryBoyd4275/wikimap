@@ -29,26 +29,15 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
-  /*
-  router.get("/login", (req, res) => {
-    if (req.session.user_id) {
-      //case where user is already logged in
-    } else {
-      let templateVars = { user: users[req.session.user_id]};
-      res.render("login", templateVars);
-    }
-  });*/
 
   const loginCheck = function (user) {
-    console.log("param:", user);
     return db.query(`
     SELECT name
     FROM users
     WHERE name = '${user.username}';
     `)
       .then (user => {
-        console.log("user.rows", user.rows);
-        return user;})
+        return user.rows[0];})
       .catch( error => {
         console.log("caught ", error);
       })
@@ -64,22 +53,17 @@ module.exports = (db) => {
     loginCheck(username)
     .then( user => {
       if(!user) {
-        res.send({error: "login failed"});
-        return;
+        res.redirect("/");
       }
-    req.session.username = username;
-    } )
+      req.session.username = user.name;
+      res.redirect("/");
+    })
+   });
 
-    console.log("Req.body: ", req.body);
-    console.log("username: ", username);
-    console.log("req.session.username: ", req.session.user_id);
-
+  router.post("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
   });
-
-  // router.post("/:id/logout", (...))
-
-  // registers user
-  router.post
 
   router.post("/register/:id", (req, res) => {
     db.query(`

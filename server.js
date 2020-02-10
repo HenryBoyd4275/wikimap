@@ -4,7 +4,6 @@ require('dotenv').config();
 
 const database = require('./routes/db_queries');
 
-
 // Web server config
 const PORT       = process.env.PORT || 8080;
 const ENV        = process.env.ENV || "development";
@@ -65,7 +64,7 @@ app.get("/", (req, res) => {
 
   database.getMapPoints(1)    // arg is the ID of the map
   .then(coords=> {
-    console.log(coords)
+    // console.log(coords)
 
     let arrOfPoints=[]
 
@@ -75,22 +74,18 @@ app.get("/", (req, res) => {
         lng:element.lng
       }
 
-      console.log(coordsOfPoint, 'asdfasdfasdfasdf')
+      // console.log(coordsOfPoint, 'asdfasdfasdfasdf')
       arrOfPoints.push(coordsOfPoint)
     }
 
+    let currentUser = req.session.username;
+    let pass2FrontEnd = {arrOfPoints, currentUser}
+    console.log("req.session.username: ", req.session.username);
 
-    let pass2FrontEnd = {arrOfPoints}
-
-    console.log(pass2FrontEnd, 'passing to front')
+    // console.log(pass2FrontEnd, 'passing to front')
 
     res.render("index", pass2FrontEnd);   //trying to pass to front end.
-
-
-
   })
-
-
 
 });
 
