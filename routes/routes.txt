@@ -7,6 +7,8 @@ GET  /user/favourites    get list of favourited maps
 GET  /user/owned         get lists of owned maps
 
 GET  /maps:id            returns and displays the specified map
+    [in terms of RESTfulness, should this not be coming from /users?
+    since /users:id will be defining the owner_id for new map?]
 POST /maps/new:id        creates a new map with the specified title
 POST /maps/id:destroy    deletes the specified map
 POST /maps/point:add     adds a new point to the current map
