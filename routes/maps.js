@@ -10,6 +10,7 @@ const database = require('./db_queries');
 
 const express = require('express');
 const router  = express.Router();
+// const cookieSession =
 
 module.exports = (db) => {
 
@@ -21,14 +22,12 @@ module.exports = (db) => {
     })
   })
 
-
-
   router.get("/:id", (req, res) => {
     let query = `
     SELECT *
-    FROM maps
+    FROM 'maps'
     JOIN
-    WHERE maps.id = ${req.params}`;
+    WHERE maps.id = '${req.params}'`;
     console.log(query);
     db.query(query)
       .then(data => {
@@ -43,20 +42,72 @@ module.exports = (db) => {
   });
 
   router.post("/new/:id", (req, res) => {
-    // if (cookie) {
-    //   show this, with edit create
-    // }
-    // else {
-    //   just show map
-    // }
+    if (user) {     //this will define user login for now
     db.query(`
-    INSERT INTO maps (owner_id, title)
-    VALUES
-    `, [])
+    INSERT INTO 'maps' (owner_id, title)
+    VALUES ($1, $2)
+    `, [owner_id, title])    // $1 being the user_id from cookie
+    }
   })
 
+  router.post("/:id/destroy", (req, res) => {
+    db.query(`
+    DELETE from 'maps'
+    WHERE id = '${req.params}'
+    `)
+  })
 
+  router.post("/point/add", (req, res) => {
+    db.query(`
+    INSERT INTO 'points' (map_id, title, description, image_url, lat, lng)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    `, map_id, title, description, image_url, lat, lng)        //$1 being the map_id from a cookie?
+  })
 
+  router.post("/point/:id/remove", (req, res) => {
+    db.query(`
+    DELETE from 'points'
+    WHERE id = '${req.params}'
+    `)
+  })
 
+  // this assumes that users can only modify title, description and url
+  router.post("/point/:id/edit", (req, res) => {
+    const queryParams = [];
+    let queryString = `
+    UPDATE 'points'
+    `;
+    if (form.title) {
+      queryParams.push(`${form.title}`)
+      if (queryParams.length = 1) {
+        queryString += `SET title = $${queryParams.length}`
+      } else {
+        queryString += `, title = $${queryParams.length}`
+      }
+    }
+
+    if (form.description) {
+      queryParams.push(`${form.description}`)
+      if (queryParams.length = 1) {
+        queryString += `SET description = $${queryParams.length}`
+      } else {
+      queryString += `, description = $${queryParams.length}`
+      }
+    }
+
+    if (form.image_url) {
+      queryParams.push(`${form.image_url}`)
+      if (queryParams.length = 1) {
+        queryString += `SET image_url = $${queryParams.length}`
+      } else {
+      queryString += `, image_url = $${queryParams.length}`
+      }
+    }
+
+    queryString += `
+    WHERE id = ${req.params}`
+
+    db.query(queryString, queryParams)
+  }) // we need to alter "form" --> will be ejs input
   return router;
 };
