@@ -1,11 +1,10 @@
 $('document').ready(function(){
-
   initMap();
 });
 
 
+let map; //global variable
 
-var map; //global variable
 
   function initMap() {
     let toronto = { lat: 43.6442, lng: -79.4022 };
@@ -37,6 +36,15 @@ var map; //global variable
     let marker = new google.maps.Marker({
       position: coords,
       map: map });
+
+    let lhlInfo = new google.maps.InfoWindow({
+        content: "<h3>Light House Labs</h3>"
+      });
+
+    marker.addListener("click", function() {
+        lhlInfo.open(map, marker);
+    });
+
   }
 
 

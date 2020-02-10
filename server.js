@@ -53,12 +53,11 @@ app.use("/api/widgets", widgetsRoutes(db));
 app.get("/", (req, res) => {
 
 
-
 //// coords, will return an ARRAY with OBJ points
 /// we need to LOOP though the array and pull the coordinates out of the OBJ and pass them into a
 // function that will crate a point on the map ???
 
-  database.getMapPoints(1)    //1 is the default map we load on pg visit
+  database.getMapPoints(1)    // arg is the ID of the map
   .then(coords=> {
     console.log(coords)
 

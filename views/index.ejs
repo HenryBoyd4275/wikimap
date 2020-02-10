@@ -26,7 +26,7 @@
   </head>
 
   <body>
-    <header>
+    <header class='nav'>
       <%- include('./partials/_header') -%>
     </header>
 
@@ -38,17 +38,18 @@
 <p><%= element.lat %>  <%= element.lng %></p>
 
 <script>
-
-
 $('document').ready(function(){
   createMarker(<%-JSON.stringify(element)%>)
 });
-
-
 </script>
 <%} %>
-
 </P>
+
+<div class='button-bar'>
+  <button type="button" class="btn btn-success">Success</button>
+  <button type="button" class="btn btn-success">Success</button>
+  <button type="button" class="btn btn-success">Success</button>
+</div>
 
     <div id="map">
       <!-- map goes here -->

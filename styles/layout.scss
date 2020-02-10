@@ -1,9 +1,26 @@
 // See: https://sass-lang.com/
 
-body {
-  background-color: #EEE;
+$mainColor:hotpink;
 
-  h1 {
-    color: #244751;
-  }
+$accentColor:lime;
+
+.navbar{
+  background-color: $mainColor;
+}
+
+#map{
+  height: 400px;
+  width: 100%;
+}
+
+h1{
+  background-color: $accentColor;
+}
+
+.button-bar{
+  background-color: $mainColor;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 50px;
+  padding-right: 50px;
 }
