@@ -1,6 +1,8 @@
 POST /user:id            logs into the specified user
 POST /user:logout        logs the current user out
+    [Should this not be /logout?]
 POST /user/register:id   makes a new user with the specified username
+    [Should this be under user though, if user is not specified when registrating new user?]
 GET  /user/favourites    get list of favourited maps
 GET  /user/owned         get lists of owned maps
 
