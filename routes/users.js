@@ -26,19 +26,20 @@ module.exports = (db) => {
   // sends registration info for new user
   router.post("/register", (req, res) => {
     const name = req.body.name;
+    console.log(name)
     db.query(`
-    INSERT INTO 'users' (name)
-    VALUES $1
-    `, [name])
-    // .then(data => {
-    //   const users = data.rows;
-    //   res.json({ users });
-    // })
-    // .catch(err => {
-    //   res
-    //     .status(500)
-    //     .json({ error: err.message });
-    // });
+    INSERT INTO users (name)
+    VALUES ('${name}')
+    `)
+    .then(data => {
+      const users = data.rows;
+      res.json({ users });
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
     res.redirect("/")
   })
 
