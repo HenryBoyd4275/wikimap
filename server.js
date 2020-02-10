@@ -65,14 +65,11 @@ app.get("/", (req, res) => {
 
   database.getMapPoints(1)    // arg is the ID of the map
   .then(coords=> {
-    // console.log(coords)
 
 
     let coordsArr=coords
     let currentUser = req.session.username;
     let pass2FrontEnd = {coordsArr, currentUser}
-
-    console.log(pass2FrontEnd, 'passing to front')
 
     res.render("index", pass2FrontEnd);   // pass to front end.
   })
