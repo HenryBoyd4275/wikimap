@@ -23,7 +23,11 @@
       </li>
 
         <div class="collapse navbar-collapse ml-auto">
-          <a class="nav-item nav-link" href="/login">Login</a>
+          <form method="POST" action="/user/login" class="form-inline my-2 my-lg-0">
+            <input class="form-control" type="username" name="username" style="width: 300px; margin: 1em"/>
+            <button type="submit"> Login </button>
+          </form>
+    <!--  <a class="nav-item nav-link" href="/user/login">Login</a> -->
           <a class="nav-item nav-link" href="/register">Register</a>
         </div>
     </ul>

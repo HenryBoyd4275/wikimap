@@ -29,8 +29,52 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+  /*
+  router.get("/login", (req, res) => {
+    if (req.session.user_id) {
+      //case where user is already logged in
+    } else {
+      let templateVars = { user: users[req.session.user_id]};
+      res.render("login", templateVars);
+    }
+  });*/
 
-  //logs user out
+  const loginCheck = function (username) {
+    return db.query(`
+    SELECT name
+    FROM users
+    WHERE name = '${username}'
+    `)
+    .then (user => {
+      console.log("user: ", user);
+      return user;})
+      .catch( error => {
+        console.log("caught ", error);
+      })
+  }
+
+  router.post("/login", (req, res) => {
+    const username = req.body;
+    if (!username) {
+      res.status(400);
+      res.send("Please enter a username");
+    }
+
+    loginCheck(username)
+    .then( user => {
+      if(!user) {
+        res.send({error: "login failed"});
+        return;
+      }
+    req.session.username = username;
+    } )
+
+    console.log("Req.body: ", req.body);
+    console.log("username: ", username);
+    console.log("req.session.username: ", req.session.user_id);
+
+  });
+
   // router.post("/:id/logout", (...))
 
   // registers user
