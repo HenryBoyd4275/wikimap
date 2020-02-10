@@ -1,7 +1,27 @@
 $('document').ready(function(){
   initMap();
+
+
+  $('#eat').on("click", function() {
+    //ajax request will return html, need to return JSON
+
+    console.log('eat button works')
+
+    $.ajax({
+      url: `/maps/query`,
+      type: "GET",
+    }).then(response => {
+     console.log("successful ajax req", response)
+
+     for (element of response){
+      createMarker(element)
+     }
+
+    });
 });
 
+
+});
 
 let map; //global variable
 
@@ -47,6 +67,8 @@ let map; //global variable
     });
 
   }
+
+
 
 
 //add text box on click

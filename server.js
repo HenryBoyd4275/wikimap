@@ -52,10 +52,7 @@ app.use("/maps", mapsRoutes(db));
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
 
-
-//// coords, will return an ARRAY with OBJ points
-/// we need to LOOP though the array and pull the coordinates out of the OBJ and pass them into a
-// function that will crate a point on the map ???
+//Should be using ajax request to call the DB so it doesnt stop the page from loading while waiting for the database.
 
   database.getMapPoints(1)    // arg is the ID of the map
   .then(coords=> {
