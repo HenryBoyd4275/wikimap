@@ -5,43 +5,26 @@
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
 
- // every /.. stands for /users.., because of the mounting in index.js
-
 const express = require('express');
 const router  = express.Router();
 
 module.exports = (db) => {
   // gets user
-  router.get("/:id", (req, res) => {
-    console.log("Id: ", req.params)
-    db.query(`
-    SELECT * FROM users
-    WHERE users.id = ${req.params};
-    `)
-      .then(data => {
-        const users = data.rows;
-        res.json({ users });
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
 
   //logs user out
-  router.post("user/logout", (req, res) => {
+  router.post("/logout", (req, res) => {
     // res.clearCookie("user");
       // whatever we'll be calling this cookie
     res.redirect("/")
   })
 
+  // registers user
   router.get("/register", (req, res) => {
-    // res.render("registration_page")
-      // TODO make registration page
+    console.log("Yay")
+    res.render("./registration.ejs")
   })
 
-  // registers user
+  // sends registration info for new user
   router.post("/register", (req, res) => {
     db.query(`
     INSERT INTO users (name)
@@ -77,5 +60,23 @@ module.exports = (db) => {
     WHERE users.id = $1
     `, [users.id]) // $1 being user cookie
   })
+
+  router.get("/:id", (req, res) => {
+    console.log("Id: ", req.params)
+    db.query(`
+    SELECT * FROM users
+    WHERE users.id = ${req.params};
+    `)
+      .then(data => {
+        const users = data.rows;
+        res.json({ users });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   return router;
 };
