@@ -1,17 +1,20 @@
 $('document').ready(function(){
   initMap();
 
+  // This event listener will call addMarker() when the map is clicked.
+  map.addListener('click', function(event) {
+    createMarker(event.latLng);
+  });
 
   $('#eat').on("click", function() {
     //ajax request will return html, need to return JSON
 
-    console.log('eat button works')
 
     $.ajax({
       url: `/maps/query`,
       type: "GET",
     }).then(response => {
-     console.log("successful ajax req", response)
+      initMap() //reloads the map thus clearing the markers
 
      for (element of response){
       createMarker(element)
@@ -66,16 +69,8 @@ let map; //global variable
         info.open(map, marker);
     });
 
+    map.addListener('click', function(event) {
+        info.close(map, marker);
+    });
+
   }
-
-
-
-
-//add text box on click
-  // let lhlInfo = new google.maps.InfoWindow({
-  //   content: "<h3>Light House Labs</h3>"
-  // });
-
-  // marker.addListener("click", function() {
-  //   lhlInfo.open(map, marker);
-  // });
