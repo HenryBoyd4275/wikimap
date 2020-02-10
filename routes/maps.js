@@ -29,12 +29,12 @@ module.exports = (db) => {
   });
 
   router.post("/new/:id", (req, res) => {
-    if (cookie) {
-      show this, with edit create
-    }
-    else {
-      just show map
-    }
+    // if (cookie) {
+    //   show this, with edit create
+    // }
+    // else {
+    //   just show map
+    // }
     db.query(`
     INSERT INTO maps (owner_id, title)
     VALUES

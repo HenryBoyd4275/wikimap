@@ -31,7 +31,7 @@ module.exports = (db) => {
   });
 
   //logs user out
-  router.post("/:id/logout", (...))
+  // router.post("/:id/logout", (...))
 
   // registers user
   router.post
