@@ -1,14 +1,20 @@
+let map; //global variable
+
+
 $('document').ready(function(){
   initMap();
 
-  // This event listener will call addMarker() when the map is clicked.
-  map.addListener('click', function(event) {
+  $('#edit').on("click", function() {
+    console.log('edit button works')
+    // This event listener will call addMarker() when the map is clicked.
+    map.addListener('click', function(event) {
     createMarker(event.latLng);
   });
 
+  })
+
   $('#eat').on("click", function() {
     //ajax request will return html, need to return JSON
-
 
     $.ajax({
       url: `/maps/query`,
@@ -26,7 +32,6 @@ $('document').ready(function(){
 
 });
 
-let map; //global variable
 
 
   function initMap() {
@@ -54,7 +59,6 @@ let map; //global variable
 
 
   function createMarker(coords){
-    console.log(coords, 'passed from index.ejs')
     let marker = new google.maps.Marker({
       position: coords,
       map: map });
