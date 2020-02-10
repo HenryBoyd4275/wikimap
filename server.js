@@ -61,27 +61,12 @@ app.get("/", (req, res) => {
   .then(coords=> {
     console.log(coords)
 
-    let arrOfPoints=[]
-
-    for (element of coords){
-      let coordsOfPoint={
-        lat:element.lat,
-        lng:element.lng
-      }
-
-      console.log(coordsOfPoint, 'asdfasdfasdfasdf')
-      arrOfPoints.push(coordsOfPoint)
-    }
-
-
-    let pass2FrontEnd = {arrOfPoints}
+    let coordsArr=coords
+    let pass2FrontEnd = {coordsArr}
 
     console.log(pass2FrontEnd, 'passing to front')
 
-    res.render("index", pass2FrontEnd);   //trying to pass to front end.
-
-
-
+    res.render("index", pass2FrontEnd);   // pass to front end.
   })
 
 

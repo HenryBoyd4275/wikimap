@@ -33,8 +33,10 @@
     <h1>My Map</h1>
 
 <P>
-<% for(element of arrOfPoints) {%>
-<p><%= element.lat %>  <%= element.lng %></p>
+<% for(element of coordsArr) {%>
+<p><%= element.lat %>  <%= element.lng %>
+  <%= console.log(element), element %>
+ </p>
 
 <script>
 $('document').ready(function(){

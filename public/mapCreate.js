@@ -32,17 +32,18 @@ let map; //global variable
 
   function createMarker(coords){
     console.log(coords, 'passed from index.ejs')
-
     let marker = new google.maps.Marker({
       position: coords,
       map: map });
 
-    let lhlInfo = new google.maps.InfoWindow({
-        content: "<h3>Light House Labs</h3>"
+    let info = new google.maps.InfoWindow({
+        content: `<h4>${coords.title}</h4>
+                  <h6>${coords.description}</h6>
+                  `
       });
 
     marker.addListener("click", function() {
-        lhlInfo.open(map, marker);
+        info.open(map, marker);
     });
 
   }
