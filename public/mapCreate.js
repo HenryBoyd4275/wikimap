@@ -1,26 +1,34 @@
 let map; //global variable
+let editMode =false;
 
 
 $('document').ready(function(){
   initMap();
+  addRemoveListeners('add')
+
 
   $('#edit').on("click", function() {
-    console.log('edit button works')
-    // This event listener will call addMarker() when the map is clicked.
-    map.addListener('click', function(event) {
-    createMarker(event.latLng);
+    // set mode to editing
+    editMode =true
   });
+
+
+
+
+  $('#save').on("click", function() {
+    // set mode to default
+    editMode =false
 
   })
 
+
   $('#eat').on("click", function() {
-    //ajax request will return html, need to return JSON
 
     $.ajax({
       url: `/maps/query`,
       type: "GET",
     }).then(response => {
-      initMap() //reloads the map thus clearing the markers
+      initMap() //reloads the map, clearing the markers
 
      for (element of response){
       createMarker(element)
@@ -77,4 +85,15 @@ $('document').ready(function(){
         info.close(map, marker);
     });
 
+  }
+
+  function addRemoveListeners(action){
+
+    const addHandler= function(event){
+      if (editMode) {
+        createMarker(event.latLng);
+      }
+    }
+
+    map.addListener('click', addHandler)
   }
