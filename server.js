@@ -4,17 +4,15 @@ require('dotenv').config();
 
 const database = require('./routes/db_queries');
 
-
 // Web server config
-const PORT          = process.env.PORT || 8080;
-const ENV           = process.env.ENV || "development";
-const express       = require("express");
-const bodyParser    = require("body-parser");
-const sass          = require("node-sass-middleware");
-const app           = express();
-const morgan        = require('morgan');
-// TODO npm install this
-// const cookieSession = require('cookieSession')
+const PORT       = process.env.PORT || 8080;
+const ENV        = process.env.ENV || "development";
+const express    = require("express");
+const bodyParser = require("body-parser");
+const sass       = require("node-sass-middleware");
+const app        = express();
+const morgan     = require('morgan');
+const cookieSession = require('cookie-session');
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -26,6 +24,11 @@ db.connect();
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2'],
+}));
 
 app.set("view engine", "ejs");
 // app.use(cookieSession({
@@ -62,17 +65,14 @@ app.get("/", (req, res) => {
 
   database.getMapPoints(1)    // arg is the ID of the map
   .then(coords=> {
-    console.log(coords)
+
 
     let coordsArr=coords
-    let pass2FrontEnd = {coordsArr}
-
-    console.log(pass2FrontEnd, 'passing to front')
+    let currentUser = req.session.username;
+    let pass2FrontEnd = {coordsArr, currentUser}
 
     res.render("index", pass2FrontEnd);   // pass to front end.
   })
-
-
 
 });
 
