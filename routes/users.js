@@ -39,15 +39,16 @@ module.exports = (db) => {
     }
   });*/
 
-  const loginCheck = function (username) {
+  const loginCheck = function (user) {
+    console.log("param:", user);
     return db.query(`
     SELECT name
     FROM users
-    WHERE name = '${username}'
+    WHERE name = '${user.username}';
     `)
-    .then (user => {
-      console.log("user: ", user);
-      return user;})
+      .then (user => {
+        console.log("user.rows", user.rows);
+        return user;})
       .catch( error => {
         console.log("caught ", error);
       })
