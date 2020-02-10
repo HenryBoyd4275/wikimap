@@ -1,4 +1,4 @@
--- Drop and recreate tables
+description-- Drop and recreate tables
 
 DROP TABLE IF EXISTS maps CASCADE;
 CREATE TABLE maps (
