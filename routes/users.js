@@ -5,29 +5,11 @@
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
 
- // every /.. stands for /users.., because of the mounting in index.js
-
 const express = require('express');
 const router  = express.Router();
 
 module.exports = (db) => {
   // gets user
-  router.get("/:id", (req, res) => {
-    console.log("Id: ", req.params)
-    db.query(`
-    SELECT * FROM users
-    WHERE users.id = ${req.params};
-    `)
-      .then(data => {
-        const users = data.rows;
-        res.json({ users });
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
 
   const loginCheck = function (user) {
     return db.query(`
@@ -64,17 +46,19 @@ module.exports = (db) => {
     res.redirect("/");
   });
 
+  // registers user
   router.get("/register", (req, res) => {
-    // res.render("registration_page")
-      // TODO make registration page
+    res.render("./registration.ejs")
   })
 
-  // registers user
+  // sends registration info for new user
   router.post("/register", (req, res) => {
+    const name = req.body.name;
+    console.log(name)
     db.query(`
     INSERT INTO users (name)
-    VALUES $1
-    `, name)
+    VALUES ('${name}')
+    `)
     .then(data => {
       const users = data.rows;
       res.json({ users });
@@ -84,6 +68,7 @@ module.exports = (db) => {
         .status(500)
         .json({ error: err.message });
     });
+    res.redirect("/")
   })
 
   router.get("/favourites", (req, res) => {
@@ -105,5 +90,23 @@ module.exports = (db) => {
     WHERE users.id = $1
     `, [users.id]) // $1 being user cookie
   })
+
+  router.get("/:id", (req, res) => {
+    console.log("Id: ", req.params)
+    db.query(`
+    SELECT * FROM users
+    WHERE users.id = ${req.params};
+    `)
+      .then(data => {
+        const users = data.rows;
+        res.json({ users });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   return router;
 };
