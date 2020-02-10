@@ -21,13 +21,13 @@ module.exports = (db) => {
       res.send(coords)
     })
   })
-  
+
   router.get("/:id", (req, res) => {
     let query = `
     SELECT *
-    FROM maps
+    FROM 'maps'
     JOIN
-    WHERE maps.id = ${req.params}`;
+    WHERE maps.id = '${req.params}'`;
     console.log(query);
     db.query(query)
       .then(data => {
@@ -44,7 +44,7 @@ module.exports = (db) => {
   router.post("/new/:id", (req, res) => {
     if (user) {     //this will define user login for now
     db.query(`
-    INSERT INTO maps (owner_id, title)
+    INSERT INTO 'maps' (owner_id, title)
     VALUES ($1, $2)
     `, [owner_id, title])    // $1 being the user_id from cookie
     }
@@ -52,27 +52,22 @@ module.exports = (db) => {
 
   router.post("/:id/destroy", (req, res) => {
     db.query(`
-    DELETE from maps
-    WHERE id = ${req.params}
+    DELETE from 'maps'
+    WHERE id = '${req.params}'
     `)
   })
 
   router.post("/point/add", (req, res) => {
     db.query(`
-    INSERT INTO points (map_id, title, description, image_url, lat, lng)
+    INSERT INTO 'points' (map_id, title, description, image_url, lat, lng)
     VALUES ($1, $2, $3, $4, $5, $6)
     `, map_id, title, description, image_url, lat, lng)        //$1 being the map_id from a cookie?
   })
 
-<<<<<<< e9aa324f58b8185d5f1998e8c2a8999aa5787f18
-
-
-
-=======
   router.post("/point/:id/remove", (req, res) => {
     db.query(`
-    DELETE from points
-    WHERE id = ${req.params}
+    DELETE from 'points'
+    WHERE id = '${req.params}'
     `)
   })
 
@@ -80,7 +75,7 @@ module.exports = (db) => {
   router.post("/point/:id/edit", (req, res) => {
     const queryParams = [];
     let queryString = `
-    UPDATE points
+    UPDATE 'points'
     `;
     if (form.title) {
       queryParams.push(`${form.title}`)
@@ -114,6 +109,5 @@ module.exports = (db) => {
 
     db.query(queryString, queryParams)
   }) // we need to alter "form" --> will be ejs input
->>>>>>> queries for now - render pages will have to be added and user/point cookies will have to be handled
   return router;
 };
