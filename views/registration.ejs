@@ -13,9 +13,9 @@
     <header> <%- include('./partials/_header'); -%> </header>
     <main style="margin: 1em;">
       <h3>Create your account</h3>
-      <form class="form-inline" action="/register" method="POST">
+      <form class="form-inline" action="/user/register" method="POST">
         <div class="form-group mb-2">
-          <label for="email">Name:</label>
+          <label for="name">Name:</label>
           <input class="form-control" type="text" name="name" placeholder="Kermit" style="width: 300px; margin: 1em">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>

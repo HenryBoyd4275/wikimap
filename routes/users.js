@@ -20,25 +20,26 @@ module.exports = (db) => {
 
   // registers user
   router.get("/register", (req, res) => {
-    console.log("Yay")
     res.render("./registration.ejs")
   })
 
   // sends registration info for new user
   router.post("/register", (req, res) => {
+    const name = req.body.name;
     db.query(`
-    INSERT INTO users (name)
+    INSERT INTO 'users' (name)
     VALUES $1
-    `, name)
-    .then(data => {
-      const users = data.rows;
-      res.json({ users });
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .json({ error: err.message });
-    });
+    `, [name])
+    // .then(data => {
+    //   const users = data.rows;
+    //   res.json({ users });
+    // })
+    // .catch(err => {
+    //   res
+    //     .status(500)
+    //     .json({ error: err.message });
+    // });
+    res.redirect("/")
   })
 
   router.get("/favourites", (req, res) => {
