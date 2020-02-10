@@ -33,8 +33,10 @@
     <h1>My Map</h1>
 
 <P>
-<% for(element of arrOfPoints) {%>
-<p><%= element.lat %>  <%= element.lng %></p>
+<% for(element of coordsArr) {%>
+<p><%= element.lat %>  <%= element.lng %>
+  <%= console.log(element), element %>
+ </p>
 
 <script>
 $('document').ready(function(){
@@ -45,13 +47,19 @@ $('document').ready(function(){
 </P>
 
 <div class='button-bar'>
-  <button type="button" class="btn btn-success">Success</button>
+  <button type="button" class="btn btn-success" id='eat'>Eats</button>
   <button type="button" class="btn btn-success">Success</button>
   <button type="button" class="btn btn-success">Success</button>
 </div>
 
     <div id="map">
       <!-- map goes here -->
+    </div>
+
+    <div class='button-bar'>
+      <button type="button" class="btn btn-success" id='eat'>Edit</button>
+      <button type="button" class="btn btn-success">Success</button>
+      <button type="button" class="btn btn-success">Success</button>
     </div>
 
     <script asyncdefer

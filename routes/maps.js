@@ -5,10 +5,24 @@
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
 
+const database = require('./db_queries');
+
+
 const express = require('express');
 const router  = express.Router();
 
 module.exports = (db) => {
+
+  router.get("/query", (req, res) => {
+
+    database.getMapPoints(2)    // arg is the ID of the map
+    .then(coords=> {
+      res.send(coords)
+    })
+  })
+
+
+
   router.get("/:id", (req, res) => {
     let query = `
     SELECT *
@@ -40,5 +54,9 @@ module.exports = (db) => {
     VALUES
     `, [])
   })
+
+
+
+
   return router;
 };
