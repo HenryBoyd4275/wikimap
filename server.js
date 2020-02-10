@@ -31,6 +31,10 @@ app.use(cookieSession({
 }));
 
 app.set("view engine", "ejs");
+// app.use(cookieSession({
+//   name: "user",
+//   keys: ["123"]
+// }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/styles", sass({
   src: __dirname + "/styles",
@@ -57,34 +61,20 @@ app.use("/maps", mapsRoutes(db));
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
 
-
-//// coords, will return an ARRAY with OBJ points
-/// we need to LOOP though the array and pull the coordinates out of the OBJ and pass them into a
-// function that will crate a point on the map ???
+//Should be using ajax request to call the DB so it doesnt stop the page from loading while waiting for the database.
 
   database.getMapPoints(1)    // arg is the ID of the map
   .then(coords=> {
     // console.log(coords)
 
-    let arrOfPoints=[]
 
-    for (element of coords){
-      let coordsOfPoint={
-        lat:element.lat,
-        lng:element.lng
-      }
-
-      // console.log(coordsOfPoint, 'asdfasdfasdfasdf')
-      arrOfPoints.push(coordsOfPoint)
-    }
-
+    let coordsArr=coords
     let currentUser = req.session.username;
-    let pass2FrontEnd = {arrOfPoints, currentUser}
-    console.log("req.session.username: ", req.session.username);
+    let pass2FrontEnd = {coordsArr, currentUser}
 
-    // console.log(pass2FrontEnd, 'passing to front')
+    console.log(pass2FrontEnd, 'passing to front')
 
-    res.render("index", pass2FrontEnd);   //trying to pass to front end.
+    res.render("index", pass2FrontEnd);   // pass to front end.
   })
 
 });
