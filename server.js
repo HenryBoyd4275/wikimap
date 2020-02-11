@@ -69,7 +69,6 @@ app.get("/", (req, res) => {
     let coordsArr=coords
     let currentUser = req.session.username;
     let pass2FrontEnd = {coordsArr, currentUser} // "templateVars"
-
     res.render("index", pass2FrontEnd);   // pass to front end.
   })
 
