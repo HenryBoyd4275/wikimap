@@ -35,16 +35,19 @@ $("document").ready(function() {
 
   $("#favourite").on("click", function() {
     console.log("Hello")
-    let mapId = 2
-    let currentUser = 1
+    // let mapId = 2
+    // let currentUser = 1
 
     //ajax request that goes into /
     //pass this along
 
-    db.query(`
-    INSERT INTO favourite_maps (user_id, map_id)
-    VALUES (${currentUser}, ${currentMap})
-    `, [user_id, map_id])     // currentUser and mapId need to be modified
+    $.ajax({
+      url: '/maps/favourite',
+      type: "POST",
+      data: {currentUser, currentMap}
+    })
+    .then(() => console.log("Hello"))
+    .catch(error => console.log(error))
   })
 
   $("#save").on("click", function() {
