@@ -19,3 +19,8 @@ VALUES
 (3, 'You will not believe we sell hats!', 'Actually very believable', NULL, 43.6242, -79.4322),
 (4, 'Fun Fun Functions', 'FUN FUN FUN FUN', NULL, 43.6942, -79.4922),
 (4, 'Loopy Lighthouse', '100, 101, 102...', NULL, 43.6542, -79.4422);
+
+INSERT INTO favourite_maps (user_id, map_id)
+VALUES
+(2, 1),
+(3, 1);

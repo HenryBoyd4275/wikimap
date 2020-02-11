@@ -15,7 +15,7 @@ module.exports = (db) => {
   router.post("/save", (req, res) => {
     db.query(`
     DELETE FROM points
-    WHERE map_id = ${req.body.currentMap}
+    WHERE map_id = ${req.body.currentMap};
     `).then(
         req.body.markerArray.forEach( element => {
         db.query(`
@@ -34,6 +34,26 @@ module.exports = (db) => {
     `).then( responce => {
       res.send(responce);
     })
+  });
+              
+  router.post("/favourite", (req, res) => {
+    currentUser = req.session.username
+
+    if (currentUser) {
+      db.query(`
+      SELECT id
+      FROM users
+      WHERE name = '${currentUser}';
+      `).then((id) => {
+        const currentUserId = id.rows[0].id
+        return currentUserId
+      }).then(currentUserId => {
+        db.query(`
+        INSERT INTO favourite_maps (user_id, map_id)
+        VALUES (${currentUserId}, ${req.body.currentMap});
+        `)}).then(() => res.send())
+    .catch(error => console.log(error))
+    }
   })
 
   router.get("/queryPoints", (req, res) => {
@@ -49,25 +69,6 @@ module.exports = (db) => {
     console.log(req.body)
 
   })
-
-  router.get("/:id", (req, res) => {
-    let query = `
-    SELECT *
-    FROM 'maps'
-    JOIN
-    WHERE maps.id = '${req.params}'`;
-    console.log(query);
-    db.query(query)
-      .then(data => {
-        const widgets = data.rows;
-        res.json({ widgets });
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
 
   router.post("/new/:id", (req, res) => {
     if (user) {     //this will define user login for now
