@@ -20,6 +20,19 @@ $("document").ready(function() {
     editMode = true;
   });
 
+  $("#favourite").on("click", function() {
+    console.log("hello")
+    console.log(currentMap)
+
+    $.ajax({
+      url: '/maps/favourite',
+      type: "POST",
+      data: {currentMap}
+    })
+    .then(console.log("Hello2"))
+    .catch(error => console.log(error))
+  })
+
   $("#save").on("click", function() {
     let markerArray = Object.values(markers).map( m => ({
       lat : m.position.lat(),
