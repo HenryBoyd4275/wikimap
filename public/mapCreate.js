@@ -1,4 +1,4 @@
-let map; //global variable
+let map;
 let editMode = false;
 let currentMap;
 

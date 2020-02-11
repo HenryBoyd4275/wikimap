@@ -51,13 +51,13 @@ $('document').ready(function(){
     <div id="map">
       <!-- map goes here -->
     </div>
-
+    <% if(currentUser){ %>
     <div class='button-bar'>
       <button type="button" class="btn btn-success" id='edit'>Add Marker</button>
       <button type="button" class="btn btn-success">Success</button>
       <button type="button" class="btn btn-success" id='save'>Save</button>
     </div>
-
+    <%}%>
     <script asyncdefer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkZfmqKkpE43LJna1yRLRV7FIrrd874TY&callback"
     ></script>
