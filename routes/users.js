@@ -84,31 +84,33 @@ module.exports = (db) => {
   })
 
   router.get("/owned", (req, res) => {
+    const username = req.session.username
+    console.log(username)
     db.query(`
     SELECT maps.*
     FROM maps
     JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
     JOIN users ON owner_id = users.id;
-    WHERE users.id = $1
+    WHERE users.id = ${username};
     `, [users.id]) // $1 being user cookie
   })
 
-  router.get("/:id", (req, res) => {
-    console.log("Id: ", req.params)
-    db.query(`
-    SELECT * FROM users
-    WHERE users.id = ${req.params};
-    `)
-      .then(data => {
-        const users = data.rows;
-        res.json({ users });
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
+  // router.get("/:id", (req, res) => {
+  //   console.log("Id: ", req.params)
+  //   db.query(`
+  //   SELECT * FROM users
+  //   WHERE users.id = ${req.params};
+  //   `)
+  //     .then(data => {
+  //       const users = data.rows;
+  //       res.json({ users });
+  //     })
+  //     .catch(err => {
+  //       res
+  //         .status(500)
+  //         .json({ error: err.message });
+  //     });
+  // });
 
   return router;
 };
