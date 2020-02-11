@@ -40,9 +40,6 @@ function initMap() {
   //creates map
   map = new google.maps.Map(document.getElementById("map"), options);
 
-  let markerLHL = { lat: 43.6442, lng: -79.4022 };
-  let tomsHome = { lat: 43.7756, lng: -79.2579 };
-
   let LHLicon = {
     url: "https://pngimg.com/uploads/rubber_duck/rubber_duck_PNG54.png", // url
     scaledSize: new google.maps.Size(30, 30), // scaled size
@@ -57,11 +54,26 @@ function createMarker(coords) {
     map: map
   });
 
+
   let info = new google.maps.InfoWindow({
-    content: `<h4>${coords.title}</h4>
-                  <h6>${coords.description}</h6>
-                  `
+    content: `${!(coords.title) ? `
+    <div class='description'>
+      <form onSubmit="return whatever(event)" id="form1">
+      Title: <input type="text" name="title" class='title'><br><br>
+      Description: <input type="text" name="description"><br>
+      </form> <br>
+
+    <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
+    <div>
+    `
+      : `<h4>${coords.title}</h4> <h6>${coords.description}</h6>` }
+      <button type="submit" form="form1" value="Submit" class='submit'>Delete</button>`
+
+
+
   });
+
+
 
   marker.addListener("click", function() {
     info.open(map, marker);
@@ -81,4 +93,25 @@ function addRemoveListeners(action) {
   };
 
   map.addListener("click", addHandler);
+}
+
+function whatever(event){
+  event.preventDefault();
+  let formValues=$(event.target).serializeArray()
+
+  let formValueArr=[]
+  formValueArr.push(formValues[0].value)
+  formValueArr.push(formValues[1].value)
+  console.log(formValueArr)
+  $(".description").empty();
+  $(".description").append(insertHTML(formValueArr))
+
+}
+
+
+function insertHTML(arr){
+  const htmlInsert=`
+  <h4>${arr[0]}</h4> <h6>${arr[1]}</h6>
+  `
+  return htmlInsert;
 }

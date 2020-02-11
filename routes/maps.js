@@ -22,6 +22,12 @@ module.exports = (db) => {
     })
   })
 
+  router.post("/update", (req, res) => {
+
+    console.log(req.body)
+
+  })
+
   router.get("/:id", (req, res) => {
     let query = `
     SELECT *
