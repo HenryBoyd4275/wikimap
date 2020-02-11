@@ -19,6 +19,8 @@ module.exports = (db) => {
     WHERE map_id = ${req.body.currentMap}
     `).then(
         req.body.markerArray.forEach( element => {
+        console.log("title", element.title);
+        console.log("desc", element.description);
         db.query(`
         INSERT INTO points (map_id, title, description, image_url, lat, lng)
         VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', 'image_url', ${element.lat}, ${element.lng})`);

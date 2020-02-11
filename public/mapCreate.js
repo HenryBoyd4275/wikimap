@@ -25,7 +25,7 @@ $("document").ready(function() {
       lat : m.position.lat(),
       lng : m.position.lng(),
       title : m.title,
-      descritpion : m.description
+      description : m.description
     }));
     $.ajax({
       url: `/maps/save`,
