@@ -1,32 +1,19 @@
 let map; //global variable
 let editMode = false;
-let newMarkers = [];
-let deleteMarkers = [];
 let currentMap;
 
 let markers = {}
 let markers_count = 0
 
-
-
-
+let mapSetup = function () {
+  initMap();
+  addRemoveListeners();
+}
 
 $("document").ready(function() {
 
-  let mapSetup = function () {
-    initMap();
-    addRemoveListeners();
-    newMarkers = [];
-    deleteMarkers = [];
-  }
-
   mapSetup();
   currentMap = 1;
-  // $.ajax({
-  //   url: `/`,
-  //   type: 'GET',
-  //   data: {mapID: 1}
-  // }).then(console.log("after ajax post"));
 
   $("#edit").on("click", function() {
     console.log('edit button')
@@ -51,13 +38,23 @@ $("document").ready(function() {
   })
 
   $("#save").on("click", function() {
-    //I need the current map ID
+    let markerArray = Object.values(markers).map( m => ({
+      lat : m.position.lat(),
+      lng : m.position.lng(),
+      title : m.title,
+      description : m.description
+    }));
     $.ajax({
       url: `/maps/save`,
       type: "POST",
-      data: {markers: newMarkers,
-      currentMap} //add the current map id from above request here
-    }).then()
+      data: {
+        markerArray,
+        currentMap
+      }
+    }).then( response => {
+      console.log("end");
+    }
+    )
     editMode = false;
   });
 
@@ -92,7 +89,6 @@ function initMap() {
     origin: new google.maps.Point(0, 0), // origin
     anchor: new google.maps.Point(0, 0) // anchor
   };
-
 }
 
 
@@ -100,12 +96,16 @@ function createMarker(coords) {
   let marker = new google.maps.Marker({
     position: coords,
     map: map,
-
   });
 
   marker_id = markers_count
   markers_count++
   markers[marker_id] = marker
+
+  //default assign databse values to title/description
+  //new points with added title/desc will overwrite this in textFields()
+  markers[marker_id].title = coords.title;
+  markers[marker_id].description = coords.description;
 
   let info = new google.maps.InfoWindow({
     content:  `${!(coords.title) ? `
@@ -118,18 +118,13 @@ function createMarker(coords) {
 
       </form> <br>
       </div>
-
     `
       : `
       <h4>${coords.title}</h4> <h6>${coords.description}</h6><button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>` }
-
       `
-
   });
 
   info.marker = marker;
-
-
 
   marker.addListener("click", function() {
     console.log(info, 'info.open')
@@ -145,14 +140,7 @@ function createMarker(coords) {
 function addRemoveListeners(action) {
   const addHandler = function(event) {
     if (editMode) {
-      newMarkers.push({
-        lat : event.latLng.lat(),
-        lng : event.latLng.lng(),
-        //description
-        //title
-      });
       createMarker(event.latLng);
-      console.log("markers", newMarkers);
     }
   };
 
@@ -185,7 +173,6 @@ function insertHTML(arr, marker_id){
 
 
 function deletePoint(marker_id){
-
   markers[marker_id].setMap(null);
-
+  delete markers[marker_id];
 }
