@@ -66,7 +66,8 @@ function createMarker(coords) {
     <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
     <div>
     `
-      : `<h4>${coords.title}</h4> <h6>${coords.description}</h6>` }`
+      : `<h4>${coords.title}</h4> <h6>${coords.description}</h6>` }
+      <button type="submit" form="form1" value="Submit" class='submit'>Delete</button>`
 
 
 

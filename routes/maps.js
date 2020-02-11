@@ -24,7 +24,6 @@ module.exports = (db) => {
 
   router.post("/update", (req, res) => {
 
-    console.log('updating description!!!!!!!!')
     console.log(req.body)
 
   })
