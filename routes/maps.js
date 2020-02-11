@@ -47,15 +47,6 @@ module.exports = (db) => {
     .catch(error => console.log(error))
     }
   })
-    //.then(res.rows[0].id)
-  //   console.log("Post request to /maps/favourite");
-  //   db.query(`
-  //   INSERT INTO favourite_maps (user_id, map_id)
-  //   VALUES
-  //   (3, 1),
-  //   (2, 2);
-  //   `)
-  // }  })
 
   router.get("/queryPoints", (req, res) => {
 
@@ -70,25 +61,6 @@ module.exports = (db) => {
     console.log(req.body)
 
   })
-
-  // router.get("/:id", (req, res) => {
-  //   let query = `
-  //   SELECT *
-  //   FROM 'maps'
-  //   JOIN
-  //   WHERE maps.id = '${req.params}'`;
-  //   console.log(query);
-  //   db.query(query)
-  //     .then(data => {
-  //       const widgets = data.rows;
-  //       res.json({ widgets });
-  //     })
-  //     .catch(err => {
-  //       res
-  //         .status(500)
-  //         .json({ error: err.message });
-  //     });
-  // });
 
   router.post("/new/:id", (req, res) => {
     if (user) {     //this will define user login for now
