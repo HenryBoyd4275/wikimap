@@ -1,7 +1,6 @@
 // load .env data into process.env
 require('dotenv').config();
 
-
 const database = require('./routes/db_queries');
 
 // Web server config
@@ -31,10 +30,7 @@ app.use(cookieSession({
 }));
 
 app.set("view engine", "ejs");
-// app.use(cookieSession({
-//   name: "user",
-//   keys: ["123"]
-// }));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/styles", sass({
   src: __dirname + "/styles",

@@ -25,6 +25,17 @@ module.exports = (db) => {
     )
   });
 
+  router.post("/getTitle", (req, res) => {
+    console.log("req", req.body.currentMap)
+    return db.query(`
+      SELECT title
+      FROM maps
+      WHERE id = ${req.body.currentMap}
+    `).then( responce => {
+      res.send(responce);
+    })
+  })
+
   router.get("/queryPoints", (req, res) => {
 
     database.getMapPoints(2)    // arg is the ID of the map

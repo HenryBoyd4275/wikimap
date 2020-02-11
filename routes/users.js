@@ -9,7 +9,6 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (db) => {
-  // gets user
 
   const loginCheck = function (user) {
     return db.query(`
