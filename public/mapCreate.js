@@ -8,15 +8,18 @@ let markers = {}
 let markers_count = 0
 
 
-$("document").ready(function() {
-let mapSetup = function () {
-  initMap();
-  addRemoveListeners();
-  newMarkers = [];
-  deleteMarkers = [];
-}
+
+
 
 $("document").ready(function() {
+
+  let mapSetup = function () {
+    initMap();
+    addRemoveListeners();
+    newMarkers = [];
+    deleteMarkers = [];
+  }
+
   mapSetup();
   currentMap = 1;
   // $.ajax({
@@ -90,7 +93,7 @@ function createMarker(coords) {
   let info = new google.maps.InfoWindow({
     content:  `${!(coords.title) ? `
     <div class='description'>
-      <form onSubmit="return textFields(event, ${marker_id})" id="form1">
+      <form onSubmit="return textFields(event,${marker_id})" id="form1">
       Title: <input type="text" name="title" class='title'><br><br>
       Description: <input type="text" name="description"><br>
 
