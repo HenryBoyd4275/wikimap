@@ -1,6 +1,10 @@
 let map; //global variable
 let editMode = false;
 
+let markers = {}
+let markers_count = 0
+
+
 $("document").ready(function() {
   initMap();
   addRemoveListeners();
@@ -48,34 +52,44 @@ function initMap() {
   };
 }
 
+
 function createMarker(coords) {
   let marker = new google.maps.Marker({
     position: coords,
-    map: map
+    map: map,
+
   });
 
+  marker_id = markers_count
+  markers_count++
+  markers[marker_id] = marker
 
   let info = new google.maps.InfoWindow({
-    content: `${!(coords.title) ? `
+    content:  `${!(coords.title) ? `
     <div class='description'>
-      <form onSubmit="return whatever(event)" id="form1">
+      <form onSubmit="return textFields(event, ${marker_id})" id="form1">
       Title: <input type="text" name="title" class='title'><br><br>
       Description: <input type="text" name="description"><br>
+
+      <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
+
       </form> <br>
+      </div>
 
-    <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
-    <div>
     `
-      : `<h4>${coords.title}</h4> <h6>${coords.description}</h6>` }
-      <button type="submit" form="form1" value="Submit" class='submit'>Delete</button>`
+      : `
+      <h4>${coords.title}</h4> <h6>${coords.description}</h6><button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>` }
 
-
+      `
 
   });
+
+  info.marker = marker;
 
 
 
   marker.addListener("click", function() {
+    console.log(info, 'info.open')
     info.open(map, marker);
   });
 
@@ -95,23 +109,33 @@ function addRemoveListeners(action) {
   map.addListener("click", addHandler);
 }
 
-function whatever(event){
+function textFields(event,marker_id){
   event.preventDefault();
   let formValues=$(event.target).serializeArray()
 
   let formValueArr=[]
   formValueArr.push(formValues[0].value)
   formValueArr.push(formValues[1].value)
-  console.log(formValueArr)
-  $(".description").empty();
-  $(".description").append(insertHTML(formValueArr))
 
+  markers[marker_id].title = formValues[0].value
+  markers[marker_id].description = formValues[1].value
+
+  $(event.target).replaceWith(insertHTML(formValueArr, marker_id))
+  console.log(markers, 'new markers')
 }
 
 
-function insertHTML(arr){
+function insertHTML(arr, marker_id){
   const htmlInsert=`
   <h4>${arr[0]}</h4> <h6>${arr[1]}</h6>
+  <button onClick="deletePoint(${marker_id})" type="submit" form="form1" value="Submit" class='submit'>Deletess</button>
   `
   return htmlInsert;
+}
+
+
+function deletePoint(marker_id){
+
+  markers[marker_id].setMap(null);
+
 }
