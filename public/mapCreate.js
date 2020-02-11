@@ -1,15 +1,24 @@
 let map; //global variable
 let editMode = false;
 let newMarkers = [];
+let deleteMarkers = [];
+let currentMap;
 
 let mapSetup = function () {
   initMap();
   addRemoveListeners();
   newMarkers = [];
+  deleteMarkers = [];
 }
 
 $("document").ready(function() {
   mapSetup();
+  currentMap = 1;
+  // $.ajax({
+  //   url: `/`,
+  //   type: 'GET',
+  //   data: {mapID: 1}
+  // }).then(console.log("after ajax post"));
 
   $("#edit").on("click", function() {
     console.log('edit button')
@@ -17,11 +26,12 @@ $("document").ready(function() {
   });
 
   $("#save").on("click", function() {
-    //ajax get the current map ID
+    //I need the current map ID
     $.ajax({
       url: `/maps/save`,
       type: "POST",
-      data: {markers: newMarkers} //add the current map id from above request here
+      data: {markers: newMarkers,
+      currentMap} //add the current map id from above request here
     }).then()
     editMode = false;
   });
@@ -29,11 +39,11 @@ $("document").ready(function() {
   $("#eat").on("click", function() {
     editMode = false;
     $.ajax({
-      url: `/maps/query`,
+      url: `/maps/queryPoints`,
       type: "GET"
     }).then(response => {
       mapSetup(); //reloads the map, clearing the markers
-
+      currentMap = response[0].map_id;
       for (element of response) {
         createMarker(element);
       }
@@ -81,7 +91,6 @@ function createMarker(coords) {
   });
 
 }
-
 
 function addRemoveListeners(action) {
   const addHandler = function(event) {
