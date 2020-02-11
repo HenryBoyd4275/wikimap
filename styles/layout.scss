@@ -1,26 +1,35 @@
 // See: https://sass-lang.com/
 
-$mainColor:hotpink;
+$mainColor:#C4AD4A;
 
-$accentColor:lime;
+$accentColor:rgb(59, 184, 1);
+
+.body{
+  background-color: $mainColor;
+}
 
 .navbar{
   background-color: $mainColor;
 }
 
 #map{
-  height: 400px;
+  height: 500px;
   width: 100%;
 }
 
 h1{
-  background-color: $accentColor;
+  background-color: transparent;
+  text-align: center
 }
 
 .button-bar{
-  background-color: $mainColor;
+  background-color: $accentColor;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding-left: 50px;
   padding-right: 50px;
+}
+
+.btn-success{
+  background-color: transparent;
 }
