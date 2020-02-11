@@ -33,6 +33,20 @@ $("document").ready(function() {
     editMode = true;
   });
 
+  $("#favourite").on("click", function() {
+    console.log("Hello")
+    let mapId = 2
+    let currentUser = 1
+
+    //ajax request that goes into /
+    //pass this along
+
+    db.query(`
+    INSERT INTO favourite_maps (user_id, map_id)
+    VALUES (${currentUser}, ${currentMap})
+    `, [user_id, map_id])     // currentUser and mapId need to be modified
+  })
+
   $("#save").on("click", function() {
     //I need the current map ID
     $.ajax({

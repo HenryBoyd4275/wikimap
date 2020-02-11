@@ -71,22 +71,24 @@ module.exports = (db) => {
     res.redirect("/")
   })
 
+  //should render favourite maps for user
+  //NOTE: this is different than "favouriting the map" in maps.js
   router.get("/favourites", (req, res) => {
     db.query(`
-    SELECT maps.title
+    SELECT maps.*
     FROM maps
     JOIN favourite_maps ON favourite_maps.user_id = maps.viewer_id
-    JOIN users ON favourite_maps.user_id = users.id
-    WHERE users.id = $1
+    JOIN users ON maps.viewer_id = users.id
+    WHERE users.id = ${currentUser}
     `, [users.id]) // $1 being user cookie
   })
 
   router.get("/owned", (req, res) => {
     db.query(`
-    SELECT maps.title
+    SELECT maps.*
     FROM maps
     JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
-    JOIN users ON favourite_maps.user_id = users.id
+    JOIN users ON owner_id = users.id;
     WHERE users.id = $1
     `, [users.id]) // $1 being user cookie
   })
