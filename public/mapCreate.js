@@ -1,13 +1,29 @@
 let map; //global variable
 let editMode = false;
+let newMarkers = [];
+let deleteMarkers = [];
+let currentMap;
 
 let markers = {}
 let markers_count = 0
 
 
 $("document").ready(function() {
+let mapSetup = function () {
   initMap();
   addRemoveListeners();
+  newMarkers = [];
+  deleteMarkers = [];
+}
+
+$("document").ready(function() {
+  mapSetup();
+  currentMap = 1;
+  // $.ajax({
+  //   url: `/`,
+  //   type: 'GET',
+  //   data: {mapID: 1}
+  // }).then(console.log("after ajax post"));
 
   $("#edit").on("click", function() {
     console.log('edit button')
@@ -15,18 +31,24 @@ $("document").ready(function() {
   });
 
   $("#save").on("click", function() {
+    //I need the current map ID
+    $.ajax({
+      url: `/maps/save`,
+      type: "POST",
+      data: {markers: newMarkers,
+      currentMap} //add the current map id from above request here
+    }).then()
     editMode = false;
   });
 
   $("#eat").on("click", function() {
     editMode = false;
     $.ajax({
-      url: `/maps/query`,
+      url: `/maps/queryPoints`,
       type: "GET"
     }).then(response => {
-      initMap(); //reloads the map, clearing the markers
-      addRemoveListeners();
-
+      mapSetup(); //reloads the map, clearing the markers
+      currentMap = response[0].map_id;
       for (element of response) {
         createMarker(element);
       }
@@ -50,6 +72,7 @@ function initMap() {
     origin: new google.maps.Point(0, 0), // origin
     anchor: new google.maps.Point(0, 0) // anchor
   };
+
 }
 
 
@@ -96,13 +119,20 @@ function createMarker(coords) {
   map.addListener("click", function(event) {
     info.close(map, marker);
   });
-}
 
+}
 
 function addRemoveListeners(action) {
   const addHandler = function(event) {
     if (editMode) {
+      newMarkers.push({
+        lat : event.latLng.lat(),
+        lng : event.latLng.lng(),
+        //description
+        //title
+      });
       createMarker(event.latLng);
+      console.log("markers", newMarkers);
     }
   };
 
