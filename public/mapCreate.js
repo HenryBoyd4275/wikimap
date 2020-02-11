@@ -1,4 +1,4 @@
-let map; //global variable
+let map;
 let editMode = false;
 let currentMap;
 
@@ -8,12 +8,21 @@ let markers_count = 0
 let mapSetup = function () {
   initMap();
   addRemoveListeners();
+  $.ajax({
+    url: `/maps/getTitle`,
+    type: "POST",
+    data: {currentMap}
+  }).then(responce => {
+    console.log("re",responce.rows[0].title);
+    $('#Title').replaceWith(`<h1>${responce.rows[0].title}</h1>`)
+  })
 }
+
 
 $("document").ready(function() {
 
-  mapSetup();
   currentMap = 1;
+  mapSetup();
 
   $("#edit").on("click", function() {
     console.log('edit button')
@@ -157,6 +166,7 @@ function textFields(event,marker_id){
   $(event.target).replaceWith(insertHTML(formValueArr, marker_id))
   console.log(markers, 'new markers')
 }
+
 
 
 function insertHTML(arr, marker_id){
