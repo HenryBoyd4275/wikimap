@@ -26,7 +26,7 @@
 
   <body>
     <header class='nav'>
-      <%- include('./partials/_header') -%>
+      <%- include('./partials/_header', {currentUser: currentUser}) %>
     </header>
 
 
@@ -34,10 +34,6 @@
 
 <P>
 <% for(element of coordsArr) {%>
-<p><%= element.lat %>  <%= element.lng %>
-  <%= console.log(element), element %>
- </p>
-
 <script>
 $('document').ready(function(){
   createMarker(<%-JSON.stringify(element)%>)
