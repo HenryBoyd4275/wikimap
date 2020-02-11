@@ -1,13 +1,14 @@
 let map; //global variable
 let editMode = false;
 let currentMap;
-
 let markers = {}
 let markers_count = 0
+
 
 let mapSetup = function () {
   initMap();
   addRemoveListeners();
+
 }
 
 $("document").ready(function() {
@@ -54,6 +55,19 @@ $("document").ready(function() {
       }
     });
   });
+
+  $("#new_map").on("click", function() {
+    editMode = true;
+    $.ajax({
+      url:"/maps/new",
+      type: "POST",
+      data:{title:'NEWNEWMAP'}
+    }).then(response => {
+      console.log('taafssadf')
+      mapSetup()
+    });
+  });
+
 });
 
 function initMap() {
