@@ -10,9 +10,21 @@ const database = require('./db_queries');
 
 const express = require('express');
 const router  = express.Router();
-// const cookieSession =
 
 module.exports = (db) => {
+
+  router.post("/save", (req, res) => {
+    console.log("data", req.body.markers);
+    req.body.markers.forEach( element => {
+      console.log("element", element);
+      console.log("element.lat", element.lat)
+      db.query(`
+      INSERT INTO points (map_id, title, description, image_url, lat, lng)
+      VALUES ('1', 'title', 'description', 'image_url', ${element.lat}, ${element.lng})`);
+      //query for current map id
+    })
+
+  });
 
   router.get("/query", (req, res) => {
 

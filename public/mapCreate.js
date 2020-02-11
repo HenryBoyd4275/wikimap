@@ -1,9 +1,15 @@
 let map; //global variable
 let editMode = false;
+let newMarkers = [];
 
-$("document").ready(function() {
+let mapSetup = function () {
   initMap();
   addRemoveListeners();
+  newMarkers = [];
+}
+
+$("document").ready(function() {
+  mapSetup();
 
   $("#edit").on("click", function() {
     console.log('edit button')
@@ -11,6 +17,12 @@ $("document").ready(function() {
   });
 
   $("#save").on("click", function() {
+    //ajax get the current map ID
+    $.ajax({
+      url: `/maps/save`,
+      type: "POST",
+      data: {markers: newMarkers} //add the current map id from above request here
+    }).then()
     editMode = false;
   });
 
@@ -20,8 +32,7 @@ $("document").ready(function() {
       url: `/maps/query`,
       type: "GET"
     }).then(response => {
-      initMap(); //reloads the map, clearing the markers
-      addRemoveListeners();
+      mapSetup(); //reloads the map, clearing the markers
 
       for (element of response) {
         createMarker(element);
@@ -40,15 +51,13 @@ function initMap() {
   //creates map
   map = new google.maps.Map(document.getElementById("map"), options);
 
-  let markerLHL = { lat: 43.6442, lng: -79.4022 };
-  let tomsHome = { lat: 43.7756, lng: -79.2579 };
-
   let LHLicon = {
     url: "https://pngimg.com/uploads/rubber_duck/rubber_duck_PNG54.png", // url
     scaledSize: new google.maps.Size(30, 30), // scaled size
     origin: new google.maps.Point(0, 0), // origin
     anchor: new google.maps.Point(0, 0) // anchor
   };
+
 }
 
 function createMarker(coords) {
@@ -70,13 +79,21 @@ function createMarker(coords) {
   map.addListener("click", function(event) {
     info.close(map, marker);
   });
+
 }
 
 
 function addRemoveListeners(action) {
   const addHandler = function(event) {
     if (editMode) {
+      newMarkers.push({
+        lat : event.latLng.lat(),
+        lng : event.latLng.lng(),
+        //description
+        //title
+      });
       createMarker(event.latLng);
+      console.log("markers", newMarkers);
     }
   };
 
