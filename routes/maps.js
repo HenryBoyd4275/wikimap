@@ -1,12 +1,11 @@
 /*
- * All routes for Widgets are defined here
- * Since this file is loaded in server.js into api/widgets,
- *   these routes are mounted onto /widgets
+ * All routes for Maps are defined here
+ * Since this file is loaded in server.js into api/Maps,
+ *   these routes are mounted onto /Maps
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
 
 const database = require('./db_queries');
-
 
 const express = require('express');
 const router  = express.Router();
@@ -14,17 +13,17 @@ const router  = express.Router();
 module.exports = (db) => {
 
   router.post("/save", (req, res) => {
-    console.log("data", req.body.markers);
-    console.log("map", req.body.currentMap);
-    req.body.markers.forEach( element => {
-      // console.log("element", element);
-      // console.log("element.lat", element.lat)
-      db.query(`
-      INSERT INTO points (map_id, title, description, image_url, lat, lng)
-      VALUES (${req.body.currentMap}, 'title', 'description', 'image_url', ${element.lat}, ${element.lng})`);
-      //query for current map id
-    })
-
+    console.log("array",req.body.markerArray);
+    db.query(`
+    DELETE FROM points
+    WHERE map_id = ${req.body.currentMap}
+    `).then(
+        req.body.markerArray.forEach( element => {
+        db.query(`
+        INSERT INTO points (map_id, title, description, image_url, lat, lng)
+        VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', 'image_url', ${element.lat}, ${element.lng})`);
+      })
+    )
   });
 
   router.get("/queryPoints", (req, res) => {
