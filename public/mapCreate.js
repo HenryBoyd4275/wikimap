@@ -106,11 +106,8 @@ $("document").ready(function() {
   $("#submit-map").on("click", function(e) {
     e.preventDefault();
     mapTitle=$(".title-box").val()
+
     $(".map-name").slideUp("slow");
-  });
-
-  $("#new_map").on("click", function() {
-
     editMode = true;
     mapTitle=$(".title-box").val()
     $.ajax({
