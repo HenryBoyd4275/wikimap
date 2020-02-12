@@ -9,7 +9,6 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (db) => {
-  // gets user
 
   const loginCheck = function (user) {
     return db.query(`
@@ -71,42 +70,46 @@ module.exports = (db) => {
     res.redirect("/")
   })
 
+  //should render favourite maps for user
+  //NOTE: this is different than "favouriting the map" in maps.js
   router.get("/favourites", (req, res) => {
     db.query(`
-    SELECT maps.title
+    SELECT maps.*
     FROM maps
     JOIN favourite_maps ON favourite_maps.user_id = maps.viewer_id
-    JOIN users ON favourite_maps.user_id = users.id
-    WHERE users.id = $1
+    JOIN users ON maps.viewer_id = users.id
+    WHERE users.id = ${currentUser}
     `, [users.id]) // $1 being user cookie
   })
 
   router.get("/owned", (req, res) => {
+    const username = req.session.username
+    console.log(username)
     db.query(`
-    SELECT maps.title
+    SELECT maps.*
     FROM maps
     JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
-    JOIN users ON favourite_maps.user_id = users.id
-    WHERE users.id = $1
+    JOIN users ON owner_id = users.id;
+    WHERE users.id = ${username};
     `, [users.id]) // $1 being user cookie
   })
 
-  router.get("/:id", (req, res) => {
-    console.log("Id: ", req.params)
-    db.query(`
-    SELECT * FROM users
-    WHERE users.id = ${req.params};
-    `)
-      .then(data => {
-        const users = data.rows;
-        res.json({ users });
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
+  // router.get("/:id", (req, res) => {
+  //   console.log("Id: ", req.params)
+  //   db.query(`
+  //   SELECT * FROM users
+  //   WHERE users.id = ${req.params};
+  //   `)
+  //     .then(data => {
+  //       const users = data.rows;
+  //       res.json({ users });
+  //     })
+  //     .catch(err => {
+  //       res
+  //         .status(500)
+  //         .json({ error: err.message });
+  //     });
+  // });
 
   return router;
 };

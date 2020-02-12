@@ -13,20 +13,48 @@ const router  = express.Router();
 module.exports = (db) => {
 
   router.post("/save", (req, res) => {
-    console.log("array",req.body.markerArray);
     db.query(`
     DELETE FROM points
-    WHERE map_id = ${req.body.currentMap}
+    WHERE map_id = ${req.body.currentMap};
     `).then(
         req.body.markerArray.forEach( element => {
-        console.log("title", element.title);
-        console.log("desc", element.description);
         db.query(`
         INSERT INTO points (map_id, title, description, image_url, lat, lng)
         VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', 'image_url', ${element.lat}, ${element.lng})`);
       })
     )
   });
+
+  router.post("/getTitle", (req, res) => {
+    console.log("req", req.body.currentMap)
+    return db.query(`
+      SELECT title
+      FROM maps
+      WHERE id = ${req.body.currentMap}
+    `).then( responce => {
+      res.send(responce);
+    })
+  });
+              
+  router.post("/favourite", (req, res) => {
+    currentUser = req.session.username
+
+    if (currentUser) {
+      db.query(`
+      SELECT id
+      FROM users
+      WHERE name = '${currentUser}';
+      `).then((id) => {
+        const currentUserId = id.rows[0].id
+        return currentUserId
+      }).then(currentUserId => {
+        db.query(`
+        INSERT INTO favourite_maps (user_id, map_id)
+        VALUES (${currentUserId}, ${req.body.currentMap});
+        `)}).then(() => res.send())
+    .catch(error => console.log(error))
+    }
+  })
 
   router.get("/queryPoints", (req, res) => {
 
@@ -41,6 +69,7 @@ module.exports = (db) => {
     console.log(req.body)
 
   })
+
 
   router.post("/new/", (req, res) => {
 
@@ -60,7 +89,6 @@ module.exports = (db) => {
       )}).then(()=>{
         res.send()
       })
-
     }
   })
 
