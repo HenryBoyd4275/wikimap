@@ -18,21 +18,23 @@ module.exports = (db) => {
       WHERE map_id = ${req.body.currentMap};
       `).then(
           req.body.markerArray.forEach( element => {
+          //console.log("url", element.image_url);
           db.query(`
           INSERT INTO points (map_id, title, description, image_url, lat, lng)
-          VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', 'image_url', ${element.lat}, ${element.lng})`);
+          VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', '${element.image_url}', ${element.lat}, ${element.lng})`);
         })
       )
     }
   });
 
   router.post("/getTitle", (req, res) => {
-    //console.log("req", req.body.currentMap)
+    console.log("1router current", req.body.currentMap);
     return db.query(`
       SELECT title
       FROM maps
       WHERE id = ${req.body.currentMap}
     `).then( responce => {
+      console.log("2router current: ", req.body.currentMap)
       res.send(responce);
     })
   });
@@ -85,21 +87,20 @@ module.exports = (db) => {
         db.query(`INSERT INTO maps(owner_id, title)
                   VALUES (${userID}, '${req.body.title}')
                   RETURNING id;
-                `)
-      }).then(()=>{
-        db.query(`
-        SELECT id
-        FROM maps
-        ORDER BY id DESC
-        LIMIT 1
-        `).then(response => {
-          console.log("server res", response.rows[0].id);
-          res.send({id:response.rows[0].id})
-        })
+                `).then(()=>{
+                  db.query(`
+                  SELECT id
+                  FROM maps
+                  ORDER BY id DESC
+                  LIMIT 1
+                  `).then(response => {
+                    console.log("server res", response.rows[0].id);
+                    res.send({id:response.rows[0].id})
+                  })
+                })
       })
     }
   })
-
 
   router.post("/:id/destroy", (req, res) => {
     db.query(`

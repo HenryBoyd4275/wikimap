@@ -11,7 +11,7 @@ let mapSetup = function () {
 
   markers = {};
   markers_count = 0;
-
+  console.log("3cMap in setup: ",currentMap);
   initMap();
   addListener();
 
@@ -21,7 +21,7 @@ let mapSetup = function () {
     type: "POST",
     data: {currentMap}
   }).then(responce => {
-    console.log("re",responce.rows[0].title);
+    console.log("4getTitle responce",responce.rows[0].title);
     $('#Title').replaceWith(`<h1 id='Title'>${responce.rows[0].title}</h1>`)
   }).catch(error => console.log("error during title update: ", error));
 }
@@ -32,7 +32,8 @@ let savePoints = function() {
     lat : m.position.lat(),
     lng : m.position.lng(),
     title : m.title,
-    description : m.description
+    description : m.description,
+    image_url : m.imgURL
   }));
   $.ajax({
     url: `/maps/save`,
@@ -96,13 +97,14 @@ $("document").ready(function() {
     $.ajax({
       url:"/maps/new",
       type: "POST",
-      data:{title:mapTitle}
+      data: {title:mapTitle}
     }).then(response => {
-      console.log('resp: ',response.id)
+      console.log('1resp: ',response.id);
       currentMap = response.id;
-      mapSetup()
-    });
-
+      console.log("2current map after request: ", currentMap);
+    }).then(() => {
+      mapSetup();
+    })
   });
 
   $("#new_map").on("click", function() {
@@ -137,21 +139,22 @@ function createMarker(coords) {
   let marker = new google.maps.Marker({
     position: coords,
     map: map,
-    img:coords.image_url
+    //img: coords.image_url
   });
 
   marker_id = markers_count
   markers_count++
   markers[marker_id] = marker
 
-  //default assign databse values to title/description
-  //new points with added title/desc will overwrite this in textFields()
+  //default assign databse values to title/description/URL
+  //new points with added values will overwrite this in textFields()
   markers[marker_id].title = coords.title;
   markers[marker_id].description = coords.description;
+  markers[marker_id].imgURL = coords.image_url
 
   //slight of hand that lets us edit the description if there isn't one
   let info = new google.maps.InfoWindow({
-    content:  `${!(coords.title) ? `
+    content:  `${!(coords.title || coords.description || coords.image_url) ? `
     <div class='description'>
       <form onSubmit="return textFields(event,${marker_id})" id="form1">
       Title: <input type="text" name="title" class='title'><br><br>
@@ -207,7 +210,7 @@ function textFields(event,marker_id){
 
   markers[marker_id].title = formValues[0].value
   markers[marker_id].description = formValues[1].value
-  markers[marker_id].imgURL = formValues[1].value
+  markers[marker_id].imgURL = formValues[2].value
 
   $(event.target).replaceWith(insertFormHTML(formValueArr, marker_id))
   console.log(markers, 'new markers')
