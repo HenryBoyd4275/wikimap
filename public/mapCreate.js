@@ -1,13 +1,16 @@
 let map;
 let editMode = false;
 let currentMap;
-
 let markers = {}
 let markers_count = 0
+
 
 let mapSetup = function () {
   initMap();
   addRemoveListeners();
+
+  markers = {}
+  markers_mapSetupcount = 0
   $.ajax({
     url: `/maps/getTitle`,
     type: "POST",
@@ -58,8 +61,7 @@ $("document").ready(function() {
       }
     }).then( response => {
       console.log("end");
-    }
-    )
+    })
     editMode = false;
   });
 
@@ -76,6 +78,30 @@ $("document").ready(function() {
       }
     });
   });
+
+  $("#submit-map").on("click", function(e) {
+    e.preventDefault();
+    mapTitle=$(".title-box").val()
+    console.log(mapTitle)
+  });
+
+  $("#new_map").on("click", function() {
+
+    editMode = true;
+    $.ajax({
+      url:"/maps/new",
+      type: "POST",
+      data:{title:'NEWNEWMAP'}
+    }).then(response => {
+      console.log('taafssadf')
+      mapSetup()
+    });
+
+
+    $(".map-name").slideDown("slow");
+    $(".title-box").focus();
+  });
+
 });
 
 function initMap() {
@@ -101,6 +127,7 @@ function createMarker(coords) {
   let marker = new google.maps.Marker({
     position: coords,
     map: map,
+    img:coords.image_url
   });
 
   marker_id = markers_count
@@ -118,21 +145,27 @@ function createMarker(coords) {
       <form onSubmit="return textFields(event,${marker_id})" id="form1">
       Title: <input type="text" name="title" class='title'><br><br>
       Description: <input type="text" name="description"><br>
+      ImgUrl: <input type="text" name="imgURL"><br>
 
       <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
+
 
       </form> <br>
       </div>
     `
       : `
-      <h4>${coords.title}</h4> <h6>${coords.description}</h6><button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>` }
+      <h6>${coords.title}</h6> <h8>${coords.description}</h8>
+      <img src="${coords.image_url}" height="52" width="52">
+      <br>
+      <button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>
+
+      <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit no work =(</button>` }
       `
   });
 
   info.marker = marker;
 
   marker.addListener("click", function() {
-    console.log(info, 'info.open')
     info.open(map, marker);
   });
 
@@ -159,9 +192,11 @@ function textFields(event,marker_id){
   let formValueArr=[]
   formValueArr.push(formValues[0].value)
   formValueArr.push(formValues[1].value)
+  formValueArr.push(formValues[2].value)
 
   markers[marker_id].title = formValues[0].value
   markers[marker_id].description = formValues[1].value
+  markers[marker_id].imgURL = formValues[1].value
 
   $(event.target).replaceWith(insertHTML(formValueArr, marker_id))
   console.log(markers, 'new markers')
@@ -171,14 +206,40 @@ function textFields(event,marker_id){
 
 function insertHTML(arr, marker_id){
   const htmlInsert=`
-  <h4>${arr[0]}</h4> <h6>${arr[1]}</h6>
+  <h6>${arr[0]}</h6> <h8>${arr[1]}</h8>
+  <img src="${arr[2]}" height="52" width="52">
+  <br>
   <button onClick="deletePoint(${marker_id})" type="submit" form="form1" value="Submit" class='submit'>Deletess</button>
+  <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit no work =(</button>
   `
   return htmlInsert;
 }
 
+function insertTextFields(events){
+  const htmlTextFields=`
+  <div class='description'>
+  <form onSubmit="return textFields(event,${marker_id})" id="form1">
+  Title: <input type="text" name="title" class='title'><br><br>
+  Description: <input type="text" name="description"><br>
+  ImgUrl: <input type="text" name="imgURL"><br>
+
+
+  <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
+
+
+  </form> <br>
+  </div>
+
+  `
+
+  $(events.target).parent().parent().replaceWith(htmlTextFields)
+}
 
 function deletePoint(marker_id){
   markers[marker_id].setMap(null);
   delete markers[marker_id];
+}
+
+function editPoint(marker_id){
+
 }
