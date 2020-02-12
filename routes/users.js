@@ -37,7 +37,7 @@ module.exports = (db) => {
       }
       req.session.username = user.name;
       res.redirect("/");
-    })
+    }).catch(error => console.log("error: ", error))
    });
 
   router.post("/logout", (req, res) => {
@@ -93,23 +93,6 @@ module.exports = (db) => {
     WHERE users.id = ${username};
     `, [users.id]) // $1 being user cookie
   })
-
-  // router.get("/:id", (req, res) => {
-  //   console.log("Id: ", req.params)
-  //   db.query(`
-  //   SELECT * FROM users
-  //   WHERE users.id = ${req.params};
-  //   `)
-  //     .then(data => {
-  //       const users = data.rows;
-  //       res.json({ users });
-  //     })
-  //     .catch(err => {
-  //       res
-  //         .status(500)
-  //         .json({ error: err.message });
-  //     });
-  // });
 
   return router;
 };

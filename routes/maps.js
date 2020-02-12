@@ -21,7 +21,7 @@ module.exports = (db) => {
           db.query(`
           INSERT INTO points (map_id, title, description, image_url, lat, lng)
           VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', '${element.image_url}', ${element.lat}, ${element.lng})`);
-        })
+        }).catch(error => console.log("error: ", error))
       )
     }
   });
@@ -31,12 +31,8 @@ module.exports = (db) => {
     database.getMapPoints(1)  // arg = ID of the map
     .then(coords=> {
       res.send(coords);
-
     })
-
   });
-
-
 
   router.post("/getTitle", (req, res) => {
     return db.query(`
@@ -45,7 +41,7 @@ module.exports = (db) => {
       WHERE id = ${req.body.currentMap}
     `).then( responce => {
       res.send(responce);
-    })
+    }).catch(error => console.log("error: ", error))
   });
 
   router.post("/favourite", (req, res) => {
@@ -96,9 +92,9 @@ module.exports = (db) => {
                   LIMIT 1
                   `).then(response => {
                     res.send({id:response.rows[0].id})
-                  })
+                  }).catch(error => console.log("error: ", error))
                 })
-      })
+      }).catch(error => console.log("error: ", error))
     }
   })
 
