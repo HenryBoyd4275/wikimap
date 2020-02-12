@@ -33,3 +33,23 @@ h1{
 .btn-success{
   background-color: transparent;
 }
+
+.map-name{
+  display: none;
+  text-align: center;
+}
+
+.info-box{
+  background-color: red;
+  width:150px;
+}
+
+.desc{
+  width: 50%;
+  word-wrap: break-word;
+}
+
+.desc-img{
+  display: flex;
+  justify-content: space-between;
+}
