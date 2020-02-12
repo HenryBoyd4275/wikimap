@@ -8,7 +8,8 @@ let markers_count = 0
 let mapSetup = function () {
   initMap();
   addRemoveListeners();
-
+  markers = {}
+  markers_mapSetupcount = 0
 }
 
 $("document").ready(function() {
@@ -37,8 +38,7 @@ $("document").ready(function() {
       }
     }).then( response => {
       console.log("end");
-    }
-    )
+    })
     editMode = false;
   });
 
@@ -56,7 +56,14 @@ $("document").ready(function() {
     });
   });
 
+  $("#submit-map").on("click", function(e) {
+    e.preventDefault();
+    mapTitle=$(".title-box").val()
+    console.log(mapTitle)
+  });
+
   $("#new_map").on("click", function() {
+
     editMode = true;
     $.ajax({
       url:"/maps/new",
@@ -66,6 +73,10 @@ $("document").ready(function() {
       console.log('taafssadf')
       mapSetup()
     });
+
+
+    $(".map-name").slideDown("slow");
+    $(".title-box").focus();
   });
 
 });

@@ -58,14 +58,11 @@ module.exports = (db) => {
                        (${userID}, '${req.body.title}');
       `
       )}).then(()=>{
-        console.log('inserted map into table!')
         res.send()
       })
 
     }
   })
-
-
 
 
   router.post("/:id/destroy", (req, res) => {
