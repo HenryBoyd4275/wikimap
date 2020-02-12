@@ -21,7 +21,6 @@ let mapSetup = function () {
     type: "POST",
     data: {currentMap}
   }).then(responce => {
-    console.log("re",responce.rows[0].title);
     $('#Title').replaceWith(`<h1 id='Title'>${responce.rows[0].title}</h1>`)
   }).catch(error => console.log("error during title update: ", error));
 }
@@ -51,14 +50,21 @@ $("document").ready(function() {
   currentMap = 1;
   mapSetup();
 
+  // Displays a dropdown with db map entries when clicked
+  // $(".nav-link dropdown-toggle").on("show.bs.dropdown", function(event) {
+  //   console.log("Boo")
+  //   var linkText = $(event.relatedTarget).text(); // Get the link text
+  //   alert("Click on OK button to view the dropdown menu for - " + linkText);
+  // })
+
+  $("")
+
   $("#edit").on("click", function() {
     console.log('edit button')
     editMode = true;
   });
 
   $("#favourite").on("click", function() {
-    console.log("hello")
-    console.log(currentMap)
 
     $.ajax({
       url: '/maps/favourite',
@@ -71,7 +77,7 @@ $("document").ready(function() {
 
   $("#save").on("click", function() {
     savePoints();
-  editMode = false;
+    editMode = false;
   })
 
   $("#eat").on("click", function() {
