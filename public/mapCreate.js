@@ -104,6 +104,7 @@ function createMarker(coords) {
   let marker = new google.maps.Marker({
     position: coords,
     map: map,
+    img:coords.image_url
   });
 
   marker_id = markers_count
