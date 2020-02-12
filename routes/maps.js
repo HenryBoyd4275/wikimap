@@ -24,6 +24,18 @@ module.exports = (db) => {
     )
   });
 
+  router.get("/initalmap", (req, res) => {
+
+    database.getMapPoints(1)  // arg = ID of the map
+    .then(coords=> {
+      res.send(coords);
+
+    })
+
+  });
+
+
+
   router.post("/getTitle", (req, res) => {
     console.log("req", req.body.currentMap)
     return db.query(`

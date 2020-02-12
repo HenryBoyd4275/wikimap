@@ -32,15 +32,7 @@
 
     <h1 id="Title"> </h1>
 
-<P>
-<% for(element of coordsArr) {%>
-<script>
-$('document').ready(function(){
-  createMarker(<%-JSON.stringify(element)%>)
-});
-</script>
-<%} %>
-</P>
+
 
 <div class='button-bar'>
   <button type="button" class="btn btn-success" id='eat'>Eats</button>
@@ -51,6 +43,8 @@ $('document').ready(function(){
     <div id="map">
       <!-- map goes here -->
     </div>
+
+
 
 <% if(currentUser){ %>
     <section class='map-name'>
@@ -64,9 +58,6 @@ $('document').ready(function(){
       </div>
 
     </section>
-
-
-    
 
     <div class='button-bar'>
       <button type="button" class="btn btn-success" id='new_map'>New Map</button>
