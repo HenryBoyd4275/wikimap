@@ -93,15 +93,12 @@ $("document").ready(function() {
     e.preventDefault();
     editMode = true;
     mapTitle=$(".title-box").val()
-    console.log(mapTitle)
     $.ajax({
       url:"/maps/new",
       type: "POST",
       data: {title:mapTitle}
     }).then(response => {
-      console.log('1resp: ',response.id);
       currentMap = response.id;
-      console.log("2current map after request: ", currentMap);
     }).then(() => {
       mapSetup();
     })

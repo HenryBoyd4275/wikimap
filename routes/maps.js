@@ -18,7 +18,6 @@ module.exports = (db) => {
       WHERE map_id = ${req.body.currentMap};
       `).then(
           req.body.markerArray.forEach( element => {
-          //console.log("url", element.image_url);
           db.query(`
           INSERT INTO points (map_id, title, description, image_url, lat, lng)
           VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', '${element.image_url}', ${element.lat}, ${element.lng})`);
@@ -28,13 +27,11 @@ module.exports = (db) => {
   });
 
   router.post("/getTitle", (req, res) => {
-    console.log("1router current", req.body.currentMap);
     return db.query(`
       SELECT title
       FROM maps
       WHERE id = ${req.body.currentMap}
     `).then( responce => {
-      console.log("2router current: ", req.body.currentMap)
       res.send(responce);
     })
   });
@@ -67,15 +64,7 @@ module.exports = (db) => {
     })
   })
 
-  router.post("/update", (req, res) => {
-
-    console.log(req.body)
-
-  })
-
-
   router.post("/new/", (req, res) => {
-    //console.log("req.body.title",req.body.title)
     currentUser=req.session.username
     if (currentUser) {
       db.query(`SELECT users.id
@@ -94,7 +83,6 @@ module.exports = (db) => {
                   ORDER BY id DESC
                   LIMIT 1
                   `).then(response => {
-                    console.log("server res", response.rows[0].id);
                     res.send({id:response.rows[0].id})
                   })
                 })
