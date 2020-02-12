@@ -43,7 +43,8 @@ let savePoints = function() {
     }
   }).then( response => {
     console.log("end");
-  }
+  })
+}
 
 $("document").ready(function() {
 
@@ -71,16 +72,16 @@ $("document").ready(function() {
   $("#save").on("click", function() {
     savePoints();
   editMode = false;
-};
-                
+  })
+
   $("#eat").on("click", function() {
     editMode = false;
     $.ajax({
       url: `/maps/queryPoints`,
       type: "GET"
     }).then(response => {
-      mapSetup(); //reloads the map, clearing the markers
       currentMap = response[0].map_id;
+      mapSetup(); //reloads the map, clearing the markers
       for (element of response) {
         createMarker(element);
       }
