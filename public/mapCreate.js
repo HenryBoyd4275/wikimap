@@ -28,6 +28,8 @@ let mapSetup = function () {
 
 //saves the current map points into the DB. needs to also save the map title
 let savePoints = function() {
+
+
   let markerArray = Object.values(markers).map( m => ({
     lat : m.position.lat(),
     lng : m.position.lng(),
@@ -35,6 +37,8 @@ let savePoints = function() {
     description : m.description,
     image_url : m.imgURL
   }));
+
+  console.log(markerArray)
   $.ajax({
     url: `/maps/save`,
     type: "POST",
@@ -50,10 +54,19 @@ let savePoints = function() {
 $("document").ready(function() {
 
   currentMap = 1;
-  mapSetup();
+  mapSetup()
+
+    $.ajax({
+      url: `/maps/initalmap`,
+      type: "GET"
+    }).then(response =>{
+      for (point of response){
+        createMarker(point)
+      }
+    })
+
 
   $("#edit").on("click", function() {
-    console.log('edit button')
     editMode = true;
   });
 
@@ -73,6 +86,7 @@ $("document").ready(function() {
   $("#save").on("click", function() {
     savePoints();
   editMode = false;
+
   })
 
   $("#eat").on("click", function() {
@@ -91,6 +105,12 @@ $("document").ready(function() {
 
   $("#submit-map").on("click", function(e) {
     e.preventDefault();
+    mapTitle=$(".title-box").val()
+    $(".map-name").slideUp("slow");
+  });
+
+  $("#new_map").on("click", function() {
+
     editMode = true;
     mapTitle=$(".title-box").val()
     $.ajax({
@@ -133,6 +153,8 @@ function initMap() {
 //creates a new marker when suer is in edit mode and map is clicked
 function createMarker(coords) {
 
+  console.log(coords)
+
   let marker = new google.maps.Marker({
     position: coords,
     map: map,
@@ -155,39 +177,45 @@ function createMarker(coords) {
     <div class='description'>
       <form onSubmit="return textFields(event,${marker_id})" id="form1">
       Title: <input type="text" name="title" class='title'><br><br>
-      Description: <input type="text" name="description"><br>
-      ImgUrl: <input type="text" name="imgURL"><br>
-
+      Description: <input type="text" name="description">
+      <br><br>
+      ImgUrl: <input type="text" name="imgURL">
+      <br><br>
       <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
-
 
       </form> <br>
       </div>
     `
-      : `
-      <h6>${coords.title}</h6> <h8>${coords.description}</h8>
-      <img src="${coords.image_url}" height="52" width="52">
+      : `<div class='info-box'>
+      <h6>${coords.title}</h6>
+      <div class='desc-img'>
+      <h8>${coords.description}</h8>
+      <img src="${coords.image_url}" alt="no img" height="45" width="52">
+      </div></div>
       <br>
       <button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>
 
-      <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit no work =(</button>` }
+      <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit</button>` }
       `
-  });
+    });
 
-  info.marker = marker;
+    info.marker = marker;
 
-  marker.addListener("click", function() {
-    info.open(map, marker);
-  });
+    marker.addListener("click", function() {
+      info.open(map, marker);
+    });
 
-  map.addListener("click", function(event) {
-    info.close(map, marker);
-  });
-}
+    map.addListener("click", function(event) {
+      info.close(map, marker);
+    });
+
+  }
 
 //adds listener for click when we enter edit mode
 function addListener(action) {
   const addHandler = function(event) {
+
+
     if (editMode) {
       createMarker(event.latLng);
     }
@@ -210,17 +238,18 @@ function textFields(event,marker_id){
   markers[marker_id].imgURL = formValues[2].value
 
   $(event.target).replaceWith(insertFormHTML(formValueArr, marker_id))
-  console.log(markers, 'new markers')
 }
 
 //inserts form field data
 function insertFormHTML(arr, marker_id){
-  const htmlInsert=`
-  <h6>${arr[0]}</h6> <h8>${arr[1]}</h8>
-  <img src="${arr[2]}" height="52" width="52">
-  <br>
-  <button onClick="deletePoint(${marker_id})" type="submit" form="form1" value="Submit" class='submit'>Deletess</button>
-  <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit no work =(</button>
+  const htmlInsert=`<div class='info-box'>
+  <h6>${arr[0]}</h6>
+  <div class='desc-img'>
+  <span class='desc'><p>${arr[1]}</p></span>
+  <img src="${arr[2]}" alt="no img" height="52" width="52">
+  </div><br>
+  <button onClick="deletePoint(${marker_id})" type="submit" form="form1" value="Submit" class='submit'>Deletes</button>
+  <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit</button>
   `
   return htmlInsert;
 }
@@ -244,6 +273,7 @@ function insertTextFields(events){
   `
 
   $(events.target).parent().parent().replaceWith(htmlTextFields)
+
 }
 
 function deletePoint(marker_id){
