@@ -11,7 +11,7 @@ let mapSetup = function () {
 
   markers = {};
   markers_count = 0;
-  console.log("3cMap in setup: ",currentMap);
+
   initMap();
   addListener();
 
@@ -21,7 +21,6 @@ let mapSetup = function () {
     type: "POST",
     data: {currentMap}
   }).then(responce => {
-    console.log("4getTitle responce",responce.rows[0].title);
     $('#Title').replaceWith(`<h1 id='Title'>${responce.rows[0].title}</h1>`)
   }).catch(error => console.log("error during title update: ", error));
 }
@@ -38,7 +37,6 @@ let savePoints = function() {
     image_url : m.imgURL
   }));
 
-  console.log(markerArray)
   $.ajax({
     url: `/maps/save`,
     type: "POST",
@@ -71,15 +69,13 @@ $("document").ready(function() {
   });
 
   $("#favourite").on("click", function() {
-    console.log("hello")
-    console.log(currentMap)
 
     $.ajax({
       url: '/maps/favourite',
       type: "POST",
       data: {currentMap}
     })
-    .then(console.log("Hello2"))
+    .then()
     .catch(error => console.log(error))
   })
 
@@ -150,7 +146,7 @@ function initMap() {
 //creates a new marker when suer is in edit mode and map is clicked
 function createMarker(coords) {
 
-  console.log(coords)
+  //console.log(coords)
 
   let marker = new google.maps.Marker({
     position: coords,

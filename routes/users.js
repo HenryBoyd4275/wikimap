@@ -14,8 +14,8 @@ module.exports = (db) => {
     return db.query(`
     SELECT name
     FROM users
-    WHERE name = '${user.username}';
-    `)
+    WHERE name = $1;
+    `, [`${user.username}`])
       .then (user => {
         return user.rows[0];})
       .catch( error => {
@@ -53,11 +53,10 @@ module.exports = (db) => {
   // sends registration info for new user
   router.post("/register", (req, res) => {
     const name = req.body.name;
-    console.log(name)
     db.query(`
     INSERT INTO users (name)
-    VALUES ('${name}')
-    `)
+    VALUES ($1)
+    `, [`${name}`])
     .then(data => {
       const users = data.rows;
       res.json({ users });
@@ -68,30 +67,6 @@ module.exports = (db) => {
         .json({ error: err.message });
     });
     res.redirect("/")
-  })
-
-  //should render favourite maps for user
-  //NOTE: this is different than "favouriting the map" in maps.js
-  router.get("/favourites", (req, res) => {
-    db.query(`
-    SELECT maps.*
-    FROM maps
-    JOIN favourite_maps ON favourite_maps.user_id = maps.viewer_id
-    JOIN users ON maps.viewer_id = users.id
-    WHERE users.id = ${currentUser}
-    `, [users.id]) // $1 being user cookie
-  })
-
-  router.get("/owned", (req, res) => {
-    const username = req.session.username
-    console.log(username)
-    db.query(`
-    SELECT maps.*
-    FROM maps
-    JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
-    JOIN users ON owner_id = users.id;
-    WHERE users.id = ${username};
-    `, [users.id]) // $1 being user cookie
   })
 
   return router;
