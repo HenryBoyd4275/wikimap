@@ -19,7 +19,8 @@
           Favourites
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#"></a>
+          <a class="dropdown-item" href="#"><Action></a>
           <a class="dropdown-item" href="#">Another action</a>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
@@ -38,12 +39,13 @@
 <!-- shows dropdown of all maps if logged out-->
       <li class="nav-item dropdown"></li>
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Something
+          All Maps
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <% for (let i = 0; i < mapList.rows.length; i++){ %>
+            <% console.log("mapItem: ", mapList.rows[i]) %>
+          <a class="dropdown-item" href="#"><%- mapList.rows[i].title %></a>
+          <% } %>
         </div>
       </li>
       <% } %>

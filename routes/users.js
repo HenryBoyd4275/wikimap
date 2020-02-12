@@ -12,7 +12,7 @@ module.exports = (db) => {
 
   const loginCheck = function (user) {
     return db.query(`
-    SELECT name
+    SELECT *
     FROM users
     WHERE name = '${user.username}';
     `)
@@ -30,12 +30,14 @@ module.exports = (db) => {
       res.send("Please enter a username");
     }
 
+    // check if user exists, and pass along name and id cookies
     loginCheck(username)
     .then( user => {
       if(!user) {
         res.redirect("/");
       }
       req.session.username = user.name;
+      req.session.userId = user.id
       res.redirect("/");
     })
    });
@@ -74,7 +76,7 @@ module.exports = (db) => {
   //NOTE: this is different than "favouriting the map" in maps.js
   router.get("/favourites", (req, res) => {
     db.query(`
-    SELECT maps.*
+    SELECT maps.title, maps.id
     FROM maps
     JOIN favourite_maps ON favourite_maps.user_id = maps.viewer_id
     JOIN users ON maps.viewer_id = users.id

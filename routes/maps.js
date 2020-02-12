@@ -55,18 +55,12 @@ module.exports = (db) => {
     }
   })
 
-  router.get("/queryPoints", (req, res) => {
+  router.post("/queryPoints", (req, res) => {
 
-    database.getMapPoints(2)    // arg is the ID of the map
+    database.getMapPoints(req.body.map)    // arg is the ID of the map
     .then(coords=> {
       res.send(coords)
     })
-  })
-
-  router.post("/update", (req, res) => {
-
-    console.log(req.body)
-
   })
 
 

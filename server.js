@@ -54,17 +54,18 @@ app.use("/maps", mapsRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-
-//Should be using ajax request to call the DB so it doesnt stop the page from loading while waiting for the database.
-
-  database.getMapPoints(1)    // arg is the ID of the map
-  .then(coords=> {
-    let coordsArr=coords
-    let currentUser = req.session.username;
-    let pass2FrontEnd = {coordsArr, currentUser} // "templateVars"
+  let mapList;
+ db.query(`SELECT * FROM maps`)
+ .then(response =>{
+   mapList=response
+  console.log(mapList)
+   let currentUser = req.session.username;
+    let pass2FrontEnd = {currentUser, mapList} // "templateVars"
+    console.log(pass2FrontEnd.maps)
     res.render("index", pass2FrontEnd);   // pass to front end.
-  })
-  .catch(error => console.log("Error: ", error));
+ })
+
+
 
 });
 

@@ -55,10 +55,17 @@ $("document").ready(function() {
   $(".dropdown-item").on("click", function() {
     console.log("Boo!")
     $.ajax({
+      url: 'user/'
+    })
+
+
+    $.ajax({
       url: `/maps/queryPoints`,
-      type: "GET"
+      type: "POST",
+
     }).then(response => {
       console.log(response)
+      console.log(response[1]) // is first point of a map
       currentMap = response[0].map_id;
       mapSetup(); //reloads the map, clearing the markers
       for (element of response) {
@@ -92,7 +99,8 @@ $("document").ready(function() {
     editMode = false;
     $.ajax({
       url: `/maps/queryPoints`,
-      type: "GET"
+      type: "POST",
+      data: {map: 2}
     }).then(response => {
       currentMap = response[0].map_id;
       mapSetup(); //reloads the map, clearing the markers
