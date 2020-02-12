@@ -1,4 +1,4 @@
---seed the db with some default data
+--seed the db with some default map data
 INSERT INTO maps (owner_id, title) VALUES
 (1, 'default'),
 (1, 'Eats'),

@@ -4,6 +4,5 @@ $(() => {
     url: "/api/users"
   }).done((users) => {
 
-
   });;
 });

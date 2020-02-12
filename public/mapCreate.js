@@ -1,26 +1,49 @@
+//global map vars
 let map;
 let editMode = false;
 let currentMap;
-let markers = {}
-let markers_count = 0
+//used for storing map marker info
+let markers = {};
+let markers_count = 0;
 
-
+//Function that consolidates map setup functions
 let mapSetup = function () {
-  initMap();
-  addRemoveListeners();
 
-  markers = {}
-  markers_mapSetupcount = 0
+  markers = {};
+  markers_count = 0;
+
+  initMap();
+  addListener();
+
+  //change the title html element to match current map title
   $.ajax({
     url: `/maps/getTitle`,
     type: "POST",
     data: {currentMap}
   }).then(responce => {
     console.log("re",responce.rows[0].title);
-    $('#Title').replaceWith(`<h1>${responce.rows[0].title}</h1>`)
-  })
+    $('#Title').replaceWith(`<h1 id='Title'>${responce.rows[0].title}</h1>`)
+  }).catch(error => console.log("error during title update: ", error));
 }
 
+//saves the current map points into the DB. needs to also save the map title
+let savePoints = function() {
+  let markerArray = Object.values(markers).map( m => ({
+    lat : m.position.lat(),
+    lng : m.position.lng(),
+    title : m.title,
+    description : m.description
+  }));
+  $.ajax({
+    url: `/maps/save`,
+    type: "POST",
+    data: {
+      markerArray,
+      currentMap
+    }
+  }).then( response => {
+    console.log("end");
+  }
 
 $("document").ready(function() {
 
@@ -46,25 +69,10 @@ $("document").ready(function() {
   })
 
   $("#save").on("click", function() {
-    let markerArray = Object.values(markers).map( m => ({
-      lat : m.position.lat(),
-      lng : m.position.lng(),
-      title : m.title,
-      description : m.description
-    }));
-    $.ajax({
-      url: `/maps/save`,
-      type: "POST",
-      data: {
-        markerArray,
-        currentMap
-      }
-    }).then( response => {
-      console.log("end");
-    })
-    editMode = false;
-  });
-
+    savePoints();
+  editMode = false;
+};
+                
   $("#eat").on("click", function() {
     editMode = false;
     $.ajax({
@@ -111,19 +119,21 @@ function initMap() {
     zoom: 10,
     center: toronto
   };
+
   //creates map
   map = new google.maps.Map(document.getElementById("map"), options);
 
-  let LHLicon = {
-    url: "https://pngimg.com/uploads/rubber_duck/rubber_duck_PNG54.png", // url
-    scaledSize: new google.maps.Size(30, 30), // scaled size
-    origin: new google.maps.Point(0, 0), // origin
-    anchor: new google.maps.Point(0, 0) // anchor
-  };
-}
+  // let LHLicon = {
+  //   url: "https://pngimg.com/uploads/rubber_duck/rubber_duck_PNG54.png", // url
+  //   scaledSize: new google.maps.Size(30, 30), // scaled size
+  //   origin: new google.maps.Point(0, 0), // origin
+  //   anchor: new google.maps.Point(0, 0) // anchor
+  // };
+};
 
-
+//creates a new marker when suer is in edit mode and map is clicked
 function createMarker(coords) {
+
   let marker = new google.maps.Marker({
     position: coords,
     map: map,
@@ -139,6 +149,7 @@ function createMarker(coords) {
   markers[marker_id].title = coords.title;
   markers[marker_id].description = coords.description;
 
+  //slight of hand that lets us edit the description if there isn't one
   let info = new google.maps.InfoWindow({
     content:  `${!(coords.title) ? `
     <div class='description'>
@@ -172,19 +183,19 @@ function createMarker(coords) {
   map.addListener("click", function(event) {
     info.close(map, marker);
   });
-
 }
 
-function addRemoveListeners(action) {
+//adds listener for click when we enter edit mode
+function addListener(action) {
   const addHandler = function(event) {
     if (editMode) {
       createMarker(event.latLng);
     }
   };
-
   map.addListener("click", addHandler);
 }
 
+//updates marker text field data
 function textFields(event,marker_id){
   event.preventDefault();
   let formValues=$(event.target).serializeArray()
@@ -198,13 +209,12 @@ function textFields(event,marker_id){
   markers[marker_id].description = formValues[1].value
   markers[marker_id].imgURL = formValues[1].value
 
-  $(event.target).replaceWith(insertHTML(formValueArr, marker_id))
+  $(event.target).replaceWith(insertFormHTML(formValueArr, marker_id))
   console.log(markers, 'new markers')
 }
 
-
-
-function insertHTML(arr, marker_id){
+//inserts form field data
+function insertFormHTML(arr, marker_id){
   const htmlInsert=`
   <h6>${arr[0]}</h6> <h8>${arr[1]}</h8>
   <img src="${arr[2]}" height="52" width="52">
@@ -214,6 +224,7 @@ function insertHTML(arr, marker_id){
   `
   return htmlInsert;
 }
+
 
 function insertTextFields(events){
   const htmlTextFields=`
@@ -238,8 +249,4 @@ function insertTextFields(events){
 function deletePoint(marker_id){
   markers[marker_id].setMap(null);
   delete markers[marker_id];
-}
-
-function editPoint(marker_id){
-
 }
