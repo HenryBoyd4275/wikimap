@@ -55,19 +55,52 @@ app.use("/maps", mapsRoutes(db));
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
   let mapList;
- db.query(`SELECT * FROM maps`)
- .then(response =>{
-   mapList=response
-  console.log(mapList)
-   let currentUser = req.session.username;
-    let pass2FrontEnd = {currentUser, mapList} // "templateVars"
-    console.log(pass2FrontEnd.maps)
-    res.render("index", pass2FrontEnd);   // pass to front end.
+  let favouriteMapList;
+  let ownedMapList;
+  let currentUserId = req.session.userId; //capitalize?
+  let currentUser = req.session.username
+
+
+  const mapsQuery =
+  `SELECT * FROM maps`
+
+  const favouriteMapsQuery = `
+  SELECT maps.title, maps.id
+  FROM maps
+  JOIN favourite_maps ON favourite_maps.map_id = maps.id
+  JOIN users ON maps.owner_id = users.id
+  WHERE users.id = ${currentUserId}
+  `
+  const ownedMapsQuery = `
+  SELECT *
+  FROM maps
+  JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
+  JOIN users ON owner_id = users.id
+  WHERE users.id = ${currentUserId};
+  `
+
+  let queries = [db.query(mapsQuery)]
+  if (currentUser) {
+
+    queries.push(db.query(favouriteMapsQuery), db.query(ownedMapsQuery))
+  }
+  Promise.all(queries)
+  .then( results => {
+    let mapList = results[0].rows
+    console.log(results[0].rows)
+    // let favouriteMapList = results[1].rows
+    // let ownedMapList = results[2].rows
+
+    // {mapList, ..., ...} =
+    console.log("mapList rows")
+    console.log(mapList)
+    res.render("index", {mapList, currentUser, currentUserId});   // pass to front end.
+  })
+
+  .catch((error) => console.log(error))
+
  })
 
-
-
-});
 
 app.listen(PORT, () => {
   console.log(`Wikimap listening on port ${PORT}`);

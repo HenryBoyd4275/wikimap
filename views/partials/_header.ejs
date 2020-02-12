@@ -42,13 +42,15 @@
           All Maps
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <% for (let i = 0; i < mapList.rows.length; i++){ %>
-            <% console.log("mapItem: ", mapList.rows[i]) %>
-          <a class="dropdown-item" href="#"><%- mapList.rows[i].title %></a>
+          <% for (let map of mapList){ %>
+            <% console.log(map) %>
+          <a class="dropdown-item" href="/maps/id/<%= map.id %>"><%- map.title %></a>
           <% } %>
         </div>
       </li>
       <% } %>
+        <%= console.log(mapList, "mapList in EJS") %>
+
 
         <div class="collapse navbar-collapse ml-auto">
           <% if(currentUser){ %>

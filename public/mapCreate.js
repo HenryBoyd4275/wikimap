@@ -50,29 +50,31 @@ $("document").ready(function() {
   currentMap = 1;
   mapSetup();
 
+  $(".dropdown-item").on("click", function(event){
+    event.preventDefault;
+    
+  })
+
   // Renders favourite map when clicking on Favourites dropdown
   // list item
-  $(".dropdown-item").on("click", function() {
-    console.log("Boo!")
-    $.ajax({
-      url: 'user/'
-    })
+  // $(".dropdown-item ").on("click", function(e) {
+  //   e.preventDefault()
 
 
-    $.ajax({
-      url: `/maps/queryPoints`,
-      type: "POST",
+  //   $.ajax({
+  //     url: `/maps/id/:id`,
+  //     type: "POST",
 
-    }).then(response => {
-      console.log(response)
-      console.log(response[1]) // is first point of a map
-      currentMap = response[0].map_id;
-      mapSetup(); //reloads the map, clearing the markers
-      for (element of response) {
-        createMarker(element);
-      }
-    });
-  })
+  //   }).then(response => {
+  //     console.log(response)
+  //     console.log(response[1]) // is first point of a map
+  //     currentMap = response[0].map_id;
+  //     mapSetup(); //reloads the map, clearing the markers
+  //     for (element of response) {
+  //       createMarker(element);
+  //     }
+  //   });
+  // })
 
   $("#edit").on("click", function() {
     console.log('edit button')

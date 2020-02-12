@@ -93,6 +93,11 @@ module.exports = (db) => {
     `)
   })
 
+  router.get("/id/:id", (req, res) => {
+    database.getMapPoints(req.params.id)
+    .then(results => res.render("index", results))
+  })
+
   router.post("/point/add", (req, res) => {
     db.query(`
     INSERT INTO 'points' (map_id, title, description, image_url, lat, lng)
