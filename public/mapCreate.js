@@ -50,14 +50,22 @@ $("document").ready(function() {
   currentMap = 1;
   mapSetup();
 
-  // Displays a dropdown with db map entries when clicked
-  // $(".nav-link dropdown-toggle").on("show.bs.dropdown", function(event) {
-  //   console.log("Boo")
-  //   var linkText = $(event.relatedTarget).text(); // Get the link text
-  //   alert("Click on OK button to view the dropdown menu for - " + linkText);
-  // })
-
-  $("")
+  // Renders favourite map when clicking on Favourites dropdown
+  // list item
+  $(".dropdown-item").on("click", function() {
+    console.log("Boo!")
+    $.ajax({
+      url: `/maps/queryPoints`,
+      type: "GET"
+    }).then(response => {
+      console.log(response)
+      currentMap = response[0].map_id;
+      mapSetup(); //reloads the map, clearing the markers
+      for (element of response) {
+        createMarker(element);
+      }
+    });
+  })
 
   $("#edit").on("click", function() {
     console.log('edit button')
