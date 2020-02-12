@@ -90,23 +90,22 @@ $("document").ready(function() {
 
   $("#submit-map").on("click", function(e) {
     e.preventDefault();
+    editMode = true;
     mapTitle=$(".title-box").val()
     console.log(mapTitle)
-  });
-
-  $("#new_map").on("click", function() {
-
-    editMode = true;
     $.ajax({
       url:"/maps/new",
       type: "POST",
-      data:{title:'NEWNEWMAP'}
+      data:{title:mapTitle}
     }).then(response => {
-      console.log('taafssadf')
+      console.log('resp: ',response.id)
+      currentMap = response.id;
       mapSetup()
     });
 
+  });
 
+  $("#new_map").on("click", function() {
     $(".map-name").slideDown("slow");
     $(".title-box").focus();
   });

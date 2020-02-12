@@ -12,20 +12,22 @@ const router  = express.Router();
 module.exports = (db) => {
 
   router.post("/save", (req, res) => {
-    db.query(`
-    DELETE FROM points
-    WHERE map_id = ${req.body.currentMap};
-    `).then(
-        req.body.markerArray.forEach( element => {
-        db.query(`
-        INSERT INTO points (map_id, title, description, image_url, lat, lng)
-        VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', 'image_url', ${element.lat}, ${element.lng})`);
-      })
-    )
+    if(req.body.markerArray){
+      db.query(`
+      DELETE FROM points
+      WHERE map_id = ${req.body.currentMap};
+      `).then(
+          req.body.markerArray.forEach( element => {
+          db.query(`
+          INSERT INTO points (map_id, title, description, image_url, lat, lng)
+          VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', 'image_url', ${element.lat}, ${element.lng})`);
+        })
+      )
+    }
   });
 
   router.post("/getTitle", (req, res) => {
-    console.log("req", req.body.currentMap)
+    //console.log("req", req.body.currentMap)
     return db.query(`
       SELECT title
       FROM maps
@@ -71,10 +73,9 @@ module.exports = (db) => {
 
 
   router.post("/new/", (req, res) => {
-
+    //console.log("req.body.title",req.body.title)
     currentUser=req.session.username
     if (currentUser) {
-
       db.query(`SELECT users.id
                 FROM users
                 WHERE name = '${currentUser}';
@@ -82,11 +83,19 @@ module.exports = (db) => {
         return id.rows[0].id
       }).then(userID =>{
         db.query(`INSERT INTO maps(owner_id, title)
-                       VALUES
-                       (${userID}, '${req.body.title}');
-      `
-      )}).then(()=>{
-        res.send()
+                  VALUES (${userID}, '${req.body.title}')
+                  RETURNING id;
+                `)
+      }).then(()=>{
+        db.query(`
+        SELECT id
+        FROM maps
+        ORDER BY id DESC
+        LIMIT 1
+        `).then(response => {
+          console.log("server res", response.rows[0].id);
+          res.send({id:response.rows[0].id})
+        })
       })
     }
   })
