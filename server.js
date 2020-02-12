@@ -41,12 +41,10 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
 const mapsRoutes = require("./routes/maps");
 
 // Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
 app.use("/user", usersRoutes(db));
 app.use("/maps", mapsRoutes(db));
 // Note: mount other resources here, using the same pattern above
@@ -61,15 +59,15 @@ app.get("/", (req, res) => {
 
   database.getMapPoints(1)    // arg is the ID of the map
   .then(coords=> {
-
     let coordsArr=coords
     let currentUser = req.session.username;
     let pass2FrontEnd = {coordsArr, currentUser} // "templateVars"
     res.render("index", pass2FrontEnd);   // pass to front end.
   })
+  .catch(error => console.log("Error: ", error));
 
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+  console.log(`Wikimap listening on port ${PORT}`);
 });

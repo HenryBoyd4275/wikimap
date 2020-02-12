@@ -6,7 +6,6 @@
  */
 
 const database = require('./db_queries');
-
 const express = require('express');
 const router  = express.Router();
 
@@ -35,7 +34,7 @@ module.exports = (db) => {
       res.send(responce);
     })
   });
-              
+
   router.post("/favourite", (req, res) => {
     currentUser = req.session.username
 
