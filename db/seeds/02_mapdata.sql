@@ -8,8 +8,7 @@ INSERT INTO maps (owner_id, title) VALUES
 
 INSERT INTO points (map_id, title, description, image_url, lat, lng)
 VALUES
-(1, 'Lighthouse Labs', 'Learn2Code', 'https://pngimg.com/uploads/rubber_duck/rubber_duck_PNG54.png', 43.6442, -79.4022),
-(1, 'secret base', 'Super Secret Base', NULL, 43.7756, -79.2779),
+(1, 'secret base', 'Super Secret Base', 'https://content.fortune.com/wp-content/uploads/2019/09/GettyImages-1171381030.jpg, 43.7756, -79.2779),
 (2, 'Burger Thing', 'get the 2 for $7', NULL, 43.6542, -79.4422),
 (2, 'Sandwich Monarch', 'Your liege makes good food', NULL, 43.6642, -79.4722),
 (2, 'McSandwitch', '*Not actually Scottish*', NULL, 43.6742, -79.4222),
@@ -19,6 +18,7 @@ VALUES
 (3, 'You will not believe we sell hats!', 'Actually very believable', NULL, 43.6242, -79.4322),
 (4, 'Fun Fun Functions', 'FUN FUN FUN FUN', NULL, 43.6942, -79.4922),
 (4, 'Loopy Lighthouse', '100, 101, 102...', NULL, 43.6542, -79.4422);
+
 
 INSERT INTO favourite_maps (user_id, map_id)
 VALUES

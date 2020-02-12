@@ -69,14 +69,28 @@ module.exports = (db) => {
 
   })
 
-  router.post("/new/:id", (req, res) => {
-    if (user) {     //this will define user login for now
-    db.query(`
-    INSERT INTO 'maps' (owner_id, title)
-    VALUES ($1, $2)
-    `, [owner_id, title])    // $1 being the user_id from cookie
+
+  router.post("/new/", (req, res) => {
+
+    currentUser=req.session.username
+    if (currentUser) {
+
+      db.query(`SELECT users.id
+                FROM users
+                WHERE name = '${currentUser}';
+      `).then(id =>{
+        return id.rows[0].id
+      }).then(userID =>{
+        db.query(`INSERT INTO maps(owner_id, title)
+                       VALUES
+                       (${userID}, '${req.body.title}');
+      `
+      )}).then(()=>{
+        res.send()
+      })
     }
   })
+
 
   router.post("/:id/destroy", (req, res) => {
     db.query(`

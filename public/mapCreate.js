@@ -43,11 +43,75 @@ let savePoints = function() {
     }
   }).then( response => {
     console.log("end");
+  }
+
+$("document").ready(function() {
+
+  currentMap = 1;
+  mapSetup();
+
+  $("#edit").on("click", function() {
+    console.log('edit button')
+    editMode = true;
   });
+
+  $("#favourite").on("click", function() {
+    console.log("hello")
+    console.log(currentMap)
+
+    $.ajax({
+      url: '/maps/favourite',
+      type: "POST",
+      data: {currentMap}
+    })
+    .then(console.log("Hello2"))
+    .catch(error => console.log(error))
+  })
+
+  $("#save").on("click", function() {
+    savePoints();
   editMode = false;
 };
+                
+  $("#eat").on("click", function() {
+    editMode = false;
+    $.ajax({
+      url: `/maps/queryPoints`,
+      type: "GET"
+    }).then(response => {
+      mapSetup(); //reloads the map, clearing the markers
+      currentMap = response[0].map_id;
+      for (element of response) {
+        createMarker(element);
+      }
+    });
+  });
 
-//setup map with basic default paramiters
+  $("#submit-map").on("click", function(e) {
+    e.preventDefault();
+    mapTitle=$(".title-box").val()
+    console.log(mapTitle)
+  });
+
+  $("#new_map").on("click", function() {
+
+    editMode = true;
+    $.ajax({
+      url:"/maps/new",
+      type: "POST",
+      data:{title:'NEWNEWMAP'}
+    }).then(response => {
+      console.log('taafssadf')
+      mapSetup()
+    });
+
+
+    $(".map-name").slideDown("slow");
+    $(".title-box").focus();
+  });
+
+});
+
 function initMap() {
   let toronto = { lat: 43.6442, lng: -79.4022 };
 
@@ -73,6 +137,7 @@ function createMarker(coords) {
   let marker = new google.maps.Marker({
     position: coords,
     map: map,
+    img:coords.image_url
   });
 
   marker_id = markers_count
@@ -91,21 +156,27 @@ function createMarker(coords) {
       <form onSubmit="return textFields(event,${marker_id})" id="form1">
       Title: <input type="text" name="title" class='title'><br><br>
       Description: <input type="text" name="description"><br>
+      ImgUrl: <input type="text" name="imgURL"><br>
 
       <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
+
 
       </form> <br>
       </div>
     `
       : `
-      <h4>${coords.title}</h4> <h6>${coords.description}</h6><button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>` }
+      <h6>${coords.title}</h6> <h8>${coords.description}</h8>
+      <img src="${coords.image_url}" height="52" width="52">
+      <br>
+      <button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>
+
+      <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit no work =(</button>` }
       `
   });
 
   info.marker = marker;
 
   marker.addListener("click", function() {
-    console.log(info, 'info.open')
     info.open(map, marker);
   });
 
@@ -132,9 +203,11 @@ function textFields(event,marker_id){
   let formValueArr=[]
   formValueArr.push(formValues[0].value)
   formValueArr.push(formValues[1].value)
+  formValueArr.push(formValues[2].value)
 
   markers[marker_id].title = formValues[0].value
   markers[marker_id].description = formValues[1].value
+  markers[marker_id].imgURL = formValues[1].value
 
   $(event.target).replaceWith(insertFormHTML(formValueArr, marker_id))
   console.log(markers, 'new markers')
@@ -143,57 +216,37 @@ function textFields(event,marker_id){
 //inserts form field data
 function insertFormHTML(arr, marker_id){
   const htmlInsert=`
-  <h4>${arr[0]}</h4> <h6>${arr[1]}</h6>
+  <h6>${arr[0]}</h6> <h8>${arr[1]}</h8>
+  <img src="${arr[2]}" height="52" width="52">
+  <br>
   <button onClick="deletePoint(${marker_id})" type="submit" form="form1" value="Submit" class='submit'>Deletess</button>
+  <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit no work =(</button>
   `
   return htmlInsert;
 }
 
-//take a guess what this does
+
+function insertTextFields(events){
+  const htmlTextFields=`
+  <div class='description'>
+  <form onSubmit="return textFields(event,${marker_id})" id="form1">
+  Title: <input type="text" name="title" class='title'><br><br>
+  Description: <input type="text" name="description"><br>
+  ImgUrl: <input type="text" name="imgURL"><br>
+
+
+  <button type="submit" form="form1" value="Submit" class='submit'>Submit</button>
+
+
+  </form> <br>
+  </div>
+
+  `
+
+  $(events.target).parent().parent().replaceWith(htmlTextFields)
+}
+
 function deletePoint(marker_id){
   markers[marker_id].setMap(null);
   delete markers[marker_id];
 }
-
-//setup defualt map and event handlers
-$("document").ready(function() {
-
-  currentMap = 1;
-  mapSetup();
-
-  $("#edit").on("click", function() {
-    console.log('edit button')
-    editMode = true;
-  });
-
-  $("#favourite").on("click", function() {
-    console.log("hello")
-    console.log(currentMap)
-
-    $.ajax({
-      url: '/maps/favourite',
-      type: "POST",
-      data: {currentMap}
-    })
-    .then(console.log("Hello2"))
-    .catch(error => console.log(error))
-  })
-
-  $("#save").on("click", function() {
-    savePoints();
-  });
-
-  $("#eat").on("click", function() {
-    editMode = false;
-    $.ajax({
-      url: `/maps/queryPoints`,
-      type: "GET"
-    }).then(response => {
-      currentMap = response[0].map_id;
-      mapSetup(); //reloads the map, clearing the markers
-      for (element of response) {
-        createMarker(element);
-      }
-    });
-  });
-});
