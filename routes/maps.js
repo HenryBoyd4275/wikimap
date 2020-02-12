@@ -12,16 +12,18 @@ const router  = express.Router();
 module.exports = (db) => {
 
   router.post("/save", (req, res) => {
-    db.query(`
-    DELETE FROM points
-    WHERE map_id = ${req.body.currentMap};
-    `).then(
-        req.body.markerArray.forEach( element => {
-        db.query(`
-        INSERT INTO points (map_id, title, description, image_url, lat, lng)
-        VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', 'image_url', ${element.lat}, ${element.lng})`);
-      })
-    )
+    if(req.body.markerArray){
+      db.query(`
+      DELETE FROM points
+      WHERE map_id = ${req.body.currentMap};
+      `).then(
+          req.body.markerArray.forEach( element => {
+          db.query(`
+          INSERT INTO points (map_id, title, description, image_url, lat, lng)
+          VALUES (${req.body.currentMap}, '${element.title}', '${element.description}', '${element.image_url}', ${element.lat}, ${element.lng})`);
+        })
+      )
+    }
   });
 
   router.get("/initalmap", (req, res) => {
@@ -37,7 +39,6 @@ module.exports = (db) => {
 
 
   router.post("/getTitle", (req, res) => {
-    console.log("req", req.body.currentMap)
     return db.query(`
       SELECT title
       FROM maps
@@ -75,18 +76,9 @@ module.exports = (db) => {
     })
   })
 
-  router.post("/update", (req, res) => {
-
-    console.log(req.body)
-
-  })
-
-
   router.post("/new/", (req, res) => {
-
     currentUser=req.session.username
     if (currentUser) {
-
       db.query(`SELECT users.id
                 FROM users
                 WHERE name = '${currentUser}';
@@ -94,15 +86,21 @@ module.exports = (db) => {
         return id.rows[0].id
       }).then(userID =>{
         db.query(`INSERT INTO maps(owner_id, title)
-                       VALUES
-                       (${userID}, '${req.body.title}');
-      `
-      )}).then(()=>{
-        res.send()
+                  VALUES (${userID}, '${req.body.title}')
+                  RETURNING id;
+                `).then(()=>{
+                  db.query(`
+                  SELECT id
+                  FROM maps
+                  ORDER BY id DESC
+                  LIMIT 1
+                  `).then(response => {
+                    res.send({id:response.rows[0].id})
+                  })
+                })
       })
     }
   })
-
 
   router.post("/:id/destroy", (req, res) => {
     db.query(`
