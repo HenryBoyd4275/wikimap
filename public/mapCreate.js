@@ -23,17 +23,15 @@ $("document").ready(function() {
   });
 
   $("#favourite").on("click", function() {
-    console.log("hello");
-    console.log(currentMap);
 
     $.ajax({
       url: "/maps/favourite",
       type: "POST",
       data: { currentMap }
     })
-      .then(console.log("Hello2"))
-      .catch(error => console.log(error));
-  });
+    .then()
+    .catch(error => console.log(error))
+  })
 
   $("#save").on("click", function() {
     savePoints();

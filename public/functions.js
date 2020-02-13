@@ -1,3 +1,4 @@
+
 let toronto = { lat: 43.6442, lng: -79.4022 };
 
 //Function that consolidates map setup functions
@@ -12,14 +13,11 @@ let mapSetup = function() {
   $.ajax({
     url: `/maps/getTitle`,
     type: "POST",
-    data: { currentMap }
-  })
-    .then(responce => {
-      console.log("4getTitle responce", responce.rows[0].title);
-      $("#Title").replaceWith(`<h1 id='Title'>${responce.rows[0].title}</h1>`);
-    })
-    .catch(error => console.log("error during title update: ", error));
-};
+    data: {currentMap}
+  }).then(responce => {
+    $('#Title').replaceWith(`<h1 id='Title'>${responce.rows[0].title}</h1>`)
+  }).catch(error => console.log("error during title update: ", error));
+}
 
 //saves the current map points into the DB. needs to also save the map title
 let savePoints = function() {
@@ -30,8 +28,7 @@ let savePoints = function() {
     description: m.description,
     image_url: m.imgURL
   }));
-
-  console.log(markerArray);
+  
   $.ajax({
     url: `/maps/save`,
     type: "POST",
@@ -39,14 +36,12 @@ let savePoints = function() {
       markerArray,
       currentMap
     }
-  }).then(response => {
+  }).then( response => {
     console.log("end");
-  });
-};
+  })
+}
 
 function initMap() {
-
-
   let options = {
     zoom: 10,
     center: toronto,
@@ -55,7 +50,6 @@ function initMap() {
 
   //creates map
   map = new google.maps.Map(document.getElementById("map"), options);
-
 
   var centerControlDiv = document.createElement('div');
   var centerControl = new CenterControl(centerControlDiv, map);
@@ -66,11 +60,9 @@ function initMap() {
 
 //creates a new marker when suer is in edit mode and map is clicked
 function createMarker(coords) {
-
   let marker = new google.maps.Marker({
     position: coords,
     map: map
-    //img: coords.image_url
   });
 
   marker_id = markers_count;
@@ -100,6 +92,7 @@ function createMarker(coords) {
       </form> <br>
       </div>
     `
+
         : `<div class='info-box'>
       <div class='info-title'><h6>${coords.title}</h6></div>
       <div class='desc-img'>
@@ -108,6 +101,7 @@ function createMarker(coords) {
       </div></div>
       <br>
       <button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>
+
 
       <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit</button>`
     }
@@ -184,9 +178,7 @@ function insertTextFields(events) {
 
   </form> <br>
   </div>
-
   `;
-
 
   $(events.target)
     .parent()
