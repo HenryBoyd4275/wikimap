@@ -1,23 +1,35 @@
 // See: https://sass-lang.com/
 
-$mainColor:#C4AD4A;
+$mainColor:Grey;
 
 $accentColor:#81008F;
 
-.body{
+body{
   background-color: $mainColor;
+}
+
+.nav {
+  background-color: $mainColor;
+  width: 100%;
 }
 
 .navbar{
-  background-color: $mainColor;
-  width: 100%;
+  background-color: $mainColor !important;
+  height: 7vh;
 }
 
-#map{
-  height: 500px;
-  width: 100%;
+@media only screen and (max-width: 420px) {
+  #map{
+    height: 80vh;
+    width: 100%;
+  }
 }
-
+@media only screen and (min-width: 420px) {
+  #map{
+    height: 67vh;
+    width: 100%;
+  }
+}
 h1{
   background-color: transparent;
   text-align: center
@@ -31,6 +43,7 @@ h1{
   // justify-content: space-evenly;
   padding-top:10px;
   padding-bottom:10px;
+  height: 3.5em;
   position: relative;
   display: flex;
   flex-direction: row;
