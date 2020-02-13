@@ -68,12 +68,21 @@ $("document").ready(function() {
     console.log(mapTitle)
   });
 
+  $(".title-box").keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  })
+
   $("#new_map").on("click", function() {
     $(".map-name-bar").slideDown('slow', function() {
       // Animation complete.
     });
     editMode = true;
   });
+
+
 
   $("#shop").on("click", function() {
     editMode = false;
@@ -133,21 +142,3 @@ $("document").ready(function() {
   });
 });
 
-// move to functions
-function testFunction(e) {
-  editMode = false;
-  $.ajax({
-    url: `/maps/queryPoints`,
-    type: "POST",
-    data: {map: e}
-  }).then(response => {
-    currentMap = response[0].map_id;
-    mapSetup(); //reloads the map, clearing the markers
-    for (element of response) {
-      createMarker(element);
-    }
-
-
-
-  });
-}
