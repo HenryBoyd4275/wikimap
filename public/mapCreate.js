@@ -8,6 +8,7 @@ let markers_count = 0;
 
 
 $("document").ready(function() {
+
   currentMap = 1;
   mapSetup();
 
@@ -68,7 +69,7 @@ $("document").ready(function() {
 
     editMode = true;
   });
-   
+
   $("#shop").on("click", function() {
     editMode = false;
 
@@ -142,4 +143,3 @@ function testFunction(e) {
     }
   });
 }
-

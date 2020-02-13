@@ -54,45 +54,45 @@ app.use("/maps", mapsRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  let mapList;
-  let favouriteMapList;
-  let ownedMapList;
   let currentUserId = req.session.userId; //capitalize?
   let currentUser = req.session.username
 
-
   const mapsQuery =
-  `SELECT * FROM maps`
+  `SELECT * FROM maps`;
 
   const favouriteMapsQuery = `
   SELECT maps.title, maps.id
   FROM maps
   JOIN favourite_maps ON favourite_maps.map_id = maps.id
   WHERE favourite_maps.user_id = ${currentUserId}
-  `
+  `;
   const ownedMapsQuery = `
   SELECT *
   FROM maps
   JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
   JOIN users ON owner_id = users.id
   WHERE users.id = ${currentUserId};
-  `
+  `;
 
   let queries = [db.query(mapsQuery)]
   if (currentUser) {
-
     queries.push(db.query(favouriteMapsQuery), db.query(ownedMapsQuery))
   }
+
   Promise.all(queries)
   .then( results => {
-    let mapList = results[0].rows
-    let favouriteMapList = results[1].rows
-    let ownedMapList = results[2].rows
 
+    let mapList = results[0].rows
+    let favouriteMapList;
+    let ownedMapList;
+    if (currentUser){
+      favouriteMapList = results[1].rows
+      ownedMapList = results[2].rows
+    }
     res.render("index", {mapList, favouriteMapList, ownedMapList, currentUser, currentUserId});   // pass to front end.
   })
+  .catch((error) => console.log("error:", error))
 
-  .catch((error) => console.log(error))
 
  })
 

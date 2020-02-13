@@ -69,7 +69,7 @@ module.exports = (db) => {
 
 
     database.getMapPoints(req.body.map)    // arg is the ID of the map
-    .then(coords=> {      
+    .then(coords=> {
       res.send(coords)
     })
   })
