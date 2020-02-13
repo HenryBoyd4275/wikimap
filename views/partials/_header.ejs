@@ -43,8 +43,12 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <% for (let map of mapList){ %>
-            <% console.log(map) %>
-          <a class="dropdown-item" href="/maps/id/<%= map.id %>"><%- map.title %></a>
+            <!-- <form class="dropdown-item" > -->
+              <button name="map" onclick="testFunction(<%= map.id %>)" ><%- map.title %></button>
+          <!-- </form> -->
+          <a id="<%= map.id %>" href="/maps/id/<%= map.id %>"><%- map.title %></a>
+          <script>
+          </script>
           <% } %>
         </div>
       </li>

@@ -87,13 +87,6 @@ app.get("/", (req, res) => {
   Promise.all(queries)
   .then( results => {
     let mapList = results[0].rows
-    console.log(results[0].rows)
-    // let favouriteMapList = results[1].rows
-    // let ownedMapList = results[2].rows
-
-    // {mapList, ..., ...} =
-    console.log("mapList rows")
-    console.log(mapList)
     res.render("index", {mapList, currentUser, currentUserId});   // pass to front end.
   })
 

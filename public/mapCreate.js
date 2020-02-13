@@ -52,7 +52,7 @@ $("document").ready(function() {
 
   $(".dropdown-item").on("click", function(event){
     event.preventDefault;
-    
+
   })
 
   // Renders favourite map when clicking on Favourites dropdown
@@ -274,4 +274,9 @@ function insertTextFields(events){
 function deletePoint(marker_id){
   markers[marker_id].setMap(null);
   delete markers[marker_id];
+}
+
+function testFunction(e) {
+  // e.preventDefault();
+  console.log(e)
 }
