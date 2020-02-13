@@ -68,8 +68,7 @@ app.get("/", (req, res) => {
   SELECT maps.title, maps.id
   FROM maps
   JOIN favourite_maps ON favourite_maps.map_id = maps.id
-  JOIN users ON maps.owner_id = users.id
-  WHERE users.id = ${currentUserId}
+  WHERE favourite_maps.user_id = ${currentUserId}
   `
   const ownedMapsQuery = `
   SELECT *
@@ -87,7 +86,10 @@ app.get("/", (req, res) => {
   Promise.all(queries)
   .then( results => {
     let mapList = results[0].rows
-    res.render("index", {mapList, currentUser, currentUserId});   // pass to front end.
+    let favouriteMapList = results[1].rows
+    let ownedMapList = results[2].rows
+
+    res.render("index", {mapList, favouriteMapList, ownedMapList, currentUser, currentUserId});   // pass to front end.
   })
 
   .catch((error) => console.log(error))

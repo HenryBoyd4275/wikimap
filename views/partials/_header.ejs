@@ -8,8 +8,15 @@
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
+      <li class="nav-item dropdown"></li>
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          All Maps
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <% for (let map of mapList){ %>
+          <button class="dropdown-item" name="map" onclick="testFunction(<%= map.id %>)" ><%- map.title %></button>
+          <% } %>
+        </div>
       </li>
 
       <% if(currentUser){ %>
@@ -19,10 +26,10 @@
           Favourites
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#"></a>
-          <a class="dropdown-item" href="#"><Action></a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <% for (let favMap of favouriteMapList){ %>
+            <% console.log(favMap, "favMap") %>
+          <button class="dropdown-item" name="map" onclick="testFunction(<%= favMap.id %>)" ><%- favMap.title %></button>
+          <% } %>
         </div>
       </li>
       <li class="nav-item dropdown"></li>
@@ -30,30 +37,15 @@
         Owned
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <a class="dropdown-item" href="#">Something else here</a>
+        <% for (let ownedMap of ownedMapList){ %>
+        <button class="dropdown-item" name="map" onclick="testFunction(<%= ownedMap.id %>)" ><%- ownedMap.title %></button>
+        <% } %>
       </div>
     </li>
       <% } else { %>
 <!-- shows dropdown of all maps if logged out-->
-      <li class="nav-item dropdown"></li>
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          All Maps
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <% for (let map of mapList){ %>
-            <!-- <form class="dropdown-item" > -->
-              <button class="dropdown-item" name="map" onclick="testFunction(<%= map.id %>)" ><%- map.title %></button>
-          <!-- </form> -->
-          <!-- <a id="<%= map.id %>" href="/maps/id/<%= map.id %>"><%- map.title %></a> -->
-          <script>
-          </script>
-          <% } %>
-        </div>
-      </li>
+
       <% } %>
-        <%= console.log(mapList, "mapList in EJS") %>
 
 
         <div class="collapse navbar-collapse ml-auto">
