@@ -64,9 +64,9 @@ $("document").ready(function() {
   });
 
   $("#new_map").on("click", function() {
-
-    (".map-name-bar").toggleUp()
-
+    $(".map-name-bar").slideDown('slow', function() {
+      // Animation complete.
+    });
     editMode = true;
   });
 
@@ -76,7 +76,7 @@ $("document").ready(function() {
     $.ajax({
       url: `/maps/queryPoints`,
       type: "POST",
-      data: {mapId:3}
+      data: {map:3}
     }).then(response => {
       currentMap = response[0].map_id;
       mapSetup(); //reloads the map, clearing the markers
@@ -91,7 +91,7 @@ $("document").ready(function() {
     $.ajax({
       url: `/maps/queryPoints`,
       type: "POST",
-      data: {mapId:4}
+      data: {map:4}
     }).then(response => {
       currentMap = response[0].map_id;
       mapSetup(); //reloads the map, clearing the markers
