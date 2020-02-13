@@ -20,7 +20,6 @@ const getMapPoints = function (mapID){
       WHERE map_id=${mapID}
   `
   ).then(res=>{
-    // console.log(res.rows)
     return res.rows;
   })
   .catch(err => console.error("not found"));

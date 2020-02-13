@@ -14,8 +14,8 @@ module.exports = (db) => {
     return db.query(`
     SELECT *
     FROM users
-    WHERE name = '${user.username}';
-    `)
+    WHERE name = $1;
+    `, [`${user.username}`])
       .then (user => {
         return user.rows[0];})
       .catch( error => {
@@ -39,7 +39,7 @@ module.exports = (db) => {
       req.session.username = user.name;
       req.session.userId = user.id
       res.redirect("/");
-    })
+    }).catch(error => console.log("error: ", error))
    });
 
   router.post("/logout", (req, res) => {
@@ -55,11 +55,10 @@ module.exports = (db) => {
   // sends registration info for new user
   router.post("/register", (req, res) => {
     const name = req.body.name;
-    console.log(name)
     db.query(`
     INSERT INTO users (name)
-    VALUES ('${name}')
-    `)
+    VALUES ($1)
+    `, [`${name}`])
     .then(data => {
       const users = data.rows;
       res.json({ users });
@@ -95,23 +94,6 @@ module.exports = (db) => {
     WHERE users.id = ${username};
     `, [users.id]) // $1 being user cookie
   })
-
-  // router.get("/:id", (req, res) => {
-  //   console.log("Id: ", req.params)
-  //   db.query(`
-  //   SELECT * FROM users
-  //   WHERE users.id = ${req.params};
-  //   `)
-  //     .then(data => {
-  //       const users = data.rows;
-  //       res.json({ users });
-  //     })
-  //     .catch(err => {
-  //       res
-  //         .status(500)
-  //         .json({ error: err.message });
-  //     });
-  // });
 
   return router;
 };

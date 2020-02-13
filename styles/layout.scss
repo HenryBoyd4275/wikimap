@@ -2,7 +2,7 @@
 
 $mainColor:#C4AD4A;
 
-$accentColor:rgb(59, 184, 1);
+$accentColor:#81008F;
 
 .body{
   background-color: $mainColor;
@@ -15,7 +15,11 @@ $accentColor:rgb(59, 184, 1);
 #map{
   height: 500px;
   width: 100%;
+
 }
+
+
+
 
 h1{
   background-color: transparent;
@@ -25,11 +29,46 @@ h1{
 .button-bar{
   background-color: $accentColor;
   display: flex;
-  justify-content: center;
-  padding-left: 50px;
-  padding-right: 50px;
+  justify-content: space-between;
+  padding-left: 200px;
+  padding-right: 200px;
+  padding-top:10px;
+  padding-bottom:10px;
 }
 
 .btn-success{
   background-color: transparent;
+}
+
+.map-name{
+  display: none;
+  text-align: center;
+}
+
+.info-box{
+  width:150px;
+}
+
+.desc{
+  width: 50%;
+  word-wrap: break-word;
+}
+
+
+.desc-img{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+h6{
+  margin-bottom: 0px !important;
+}
+
+.info-title{
+  border-bottom: solid;
+}
+
+.btn-success{
+  background-color: #A09AB3 !important;
 }
