@@ -57,6 +57,8 @@ app.get("/", (req, res) => {
   let currentUserId = req.session.userId; //capitalize?
   let currentUser = req.session.username
 
+
+
   const mapsQuery =
   `SELECT * FROM maps`;
 

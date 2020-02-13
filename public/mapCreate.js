@@ -32,7 +32,10 @@ $("document").ready(function() {
       type: "POST",
       data: { currentMap }
     })
-    .then()
+    .then((response) => {
+      $("#dropdownmenufav").append(`<button class="dropdown-item" name="favMaps" onclick="testFunction(${currentMap})" > ${response} </button>`)
+
+    })
     .catch(error => console.log(error))
   })
 
@@ -54,6 +57,8 @@ $("document").ready(function() {
       for (element of response) {
         createMarker(element);
       }
+
+
     });
   });
 
@@ -141,5 +146,8 @@ function testFunction(e) {
     for (element of response) {
       createMarker(element);
     }
+
+
+
   });
 }

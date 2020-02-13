@@ -27,9 +27,8 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Favourites
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+          <div id="dropdownmenufav" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
             <% for (let favMap of favouriteMapList){ %>
-              <% console.log(favMap, "favMap") %>
             <button class="dropdown-item" name="favMaps" onclick="testFunction(<%= favMap.id %>)" ><%- favMap.title %></button>
             <% } %>
           </div>
