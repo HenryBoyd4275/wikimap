@@ -5,7 +5,7 @@ $mainColor:#C4AD4A;
 $accentColor:#81008F;
 
 .body{
-  background-color: $mainColor;
+  background-image: linear-gradient(red, yellow);
 }
 
 .navbar{
@@ -23,12 +23,8 @@ h1{
   text-align: center
 }
 
-.button-bar-top{
+.button-bar{
   background-color: $accentColor;
-  // grid-template-columns: 1fr 3fr 1fr;
-  // grid-template-rows: 1fr;
-  // grid-template-areas: ". . .";
-  // justify-content: space-evenly;
   padding-top:10px;
   padding-bottom:10px;
   position: relative;
@@ -36,29 +32,6 @@ h1{
   flex-direction: row;
   justify-content: space-evenly;
 }
-
-.button-bar-bottom{
-  background-color: $accentColor;
-  justify-content: space-between;
-  display: flex;
-}
-
-//button bar divs
-.ftr-map-btns{
-  // grid-area: 1 / 2 ;
-
-}
-
-.edit-mode{
-  // grid-area: 1 / 3 ;
-  float:right;
-  position: relative;
-}
-
-.empty-div{
-  // grid-area:  1 / 1 ;
-}
-
 
 .btn-success{
   background-color: transparent;
@@ -95,4 +68,43 @@ h6{
 
 .btn-success{
   background-color: #A09AB3 !important;
+}
+
+ /* The Modal (background) */
+ .modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  opacity: 0.9;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
