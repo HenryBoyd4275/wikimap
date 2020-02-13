@@ -67,9 +67,8 @@ app.get("/", (req, res) => {
   WHERE favourite_maps.user_id = ${currentUserId}
   `;
   const ownedMapsQuery = `
-  SELECT *
+  SELECT maps.*
   FROM maps
-  JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
   JOIN users ON owner_id = users.id
   WHERE users.id = ${currentUserId};
   `;
