@@ -49,8 +49,8 @@
       <div class="login collapse navbar-collapse ml-auto">
         <% if(currentUser){ %>
           <%= currentUser %>
-          <form method="POST" action="user/logout">
-            <button type="submit" class="btn btn-light"> Logout </button>
+          <form method="POST" id="logoutBttn" action="user/logout">
+            <button type="submit"  class="btn btn-light"> Logout </button>
           </form>
           <% } else { %>
         <form id="loginForm" method="POST" action="/user/login" class="form-inline my-2 my-lg-0">
