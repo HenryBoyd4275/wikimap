@@ -42,7 +42,7 @@ h1{
   text-align: center
 }
 
-.button-bar-top{
+.button-bar{
   background-color: $accentColor;
   padding-top:10px;
   padding-bottom:10px;
@@ -51,12 +51,6 @@ h1{
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-}
-
-.button-bar-bottom{
-  background-color: $accentColor;
-  justify-content: space-between;
-  display: flex;
 }
 
 .btn-success{
@@ -76,7 +70,6 @@ h1{
   width: 50%;
   word-wrap: break-word;
 }
-
 
 .desc-img{
   display: flex;
