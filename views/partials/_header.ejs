@@ -51,12 +51,12 @@
         <% if(currentUser){ %>
           <%= currentUser %>
           <form method="POST" action="user/logout">
-            <button> Logout </button>
+            <button type="submit" class="btn btn-light"> Logout </button>
           </form>
           <% } else { %>
         <form id="loginForm" method="POST" action="/user/login" class="form-inline my-2 my-lg-0">
-          <input class="form-control" type="username" name="username" style="width: 300px; margin: 1em"/>
-          <button type="submit"> Login </button>
+          <input class="form-control" type="username" name="username" style="width: 300px; "/>
+          <button type="submit" class="btn btn-light"> Login </button>
         </form>
         <a class="nav-item nav-link" href="/user/register">Register</a>
         <% } %>
