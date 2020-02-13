@@ -67,7 +67,6 @@ module.exports = (db) => {
 
   router.post("/queryPoints", (req, res) => {
 
-
     database.getMapPoints(req.body.map)    // arg is the ID of the map
     .then(coords=> {
       res.send(coords)

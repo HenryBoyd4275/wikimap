@@ -24,9 +24,7 @@
       <%- include('./partials/_header', {currentUser: currentUser}) %>
     </header>
 
-
     <h1 id="Title"> </h1>
-
 <div class='button-bar'>
   <button type="button" class="btn btn-light" id='eat'>Eats</button>
   <button type="button" class="btn btn-light" id='shop'>Shop</button>
@@ -40,7 +38,7 @@
     <% if(currentUser){ %>
       <section class='map-name'>
         <div class='map-name-bar'>
-        <form action="/" method="POST" class='submitBox'>
+        <form>
           Title: <input type="text" name="title" class='title-box'>
 
           <button type="button" class="btn btn-success" id='submit-map'>Submit Map</button>
