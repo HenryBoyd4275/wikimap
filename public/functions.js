@@ -225,15 +225,13 @@ function CenterControl(controlDiv, map) {
 
 }
 
-function testFunction(e) {
+function redirectByMapID(mapID) {
   editMode = false;
-  console.log(e, "e")
   $.ajax({
     url: `/maps/queryPoints`,
     type: "POST",
-    data: {map: e}
+    data: {map: mapID}
   }).then(response => {
-    console.log(response, "response")
     currentMap = response[0].map_id;
     mapSetup(); //reloads the map, clearing the markers
     for (element of response) {

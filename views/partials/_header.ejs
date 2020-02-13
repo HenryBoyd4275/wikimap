@@ -12,7 +12,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <% for (let map of mapList){ %>
-              <button class="dropdown-item" name="allMaps" onclick="testFunction(<%= map.id %>)" ><%- map.title %></button>
+              <button class="dropdown-item" name="allMaps" onclick="redirectByMapID(<%= map.id %>)" ><%- map.title %></button>
               <% } %>
             </div>
           </li>
@@ -27,7 +27,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
             <% for (let favMap of favouriteMapList){ %>
               <% console.log(favMap, "favMap") %>
-            <button class="dropdown-item" name="favMaps" onclick="testFunction(<%= favMap.id %>)" ><%- favMap.title %></button>
+            <button class="dropdown-item" name="favMaps" onclick="redirectByMapID(<%= favMap.id %>)" ><%- favMap.title %></button>
             <% } %>
           </div>
           </li>
@@ -40,7 +40,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
             <% for (let ownedMap of ownedMapList){ %>
               <% console.log(ownedMap, "ownedMap") %>
-            <button class="dropdown-item" name="ownedMaps" onclick="testFunction(<%= ownedMap.id %>)" ><%- ownedMap.title %></button>
+            <button class="dropdown-item" name="ownedMaps" onclick="redirectByMapID(<%= ownedMap.id %>)" ><%- ownedMap.title %></button>
             <% } %>
           </div>
         </div>
