@@ -60,7 +60,10 @@ window.onclick = function(event) {
       type: "POST",
       data: { currentMap }
     })
-    .then()
+    .then((response) => {
+      $("#dropdownmenufav").append(`<button class="dropdown-item" name="favMaps" onclick="testFunction(${currentMap})" > ${response} </button>`)
+
+    })
     .catch(error => console.log(error))
   })
 
@@ -84,6 +87,8 @@ window.onclick = function(event) {
       for (element of response) {
         createMarker(element);
       }
+
+
     });
   });
 
@@ -166,6 +171,4 @@ window.onclick = function(event) {
     $(".title-box").focus();
   });
 });
-
-// move to functions
 

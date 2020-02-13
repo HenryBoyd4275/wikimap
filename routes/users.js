@@ -90,8 +90,8 @@ module.exports = (db) => {
     SELECT maps.*
     FROM maps
     JOIN users ON owner_id = users.id;
-    WHERE users.id = ${username};
-    `, [users.id]) // $1 being user cookie
+    WHERE owner.id = $1;
+    `, [`${username}`]) // $1 being user cookie
   })
 
   return router;
