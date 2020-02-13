@@ -25,23 +25,27 @@
     </header>
 
 
-    <h1 id="Title">
-      <!-- title goes here -->
-    </h1>
+    <h1 id="Title"> </h1>
 
-<div class='button-bar-top'>
-  <div class="empty-div">
+  <div class='button-bar'>
+
+      <button type="button" class="btn btn-light" id='eat'>Eats</button>
+      <button type="button" class="btn btn-light" id='shop'>Shop</button>
+      <button type="button" class="btn btn-light" id='play'>Play</button>
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Hit "save" below to save your new locations!</p>
+      </div>
+
+    </div>
 
   </div>
-  <!-- <div class="ftr-map-btns"></div> -->
-    <button type="button" class="btn btn-light" id='eat'>Eats</button>
-    <button type="button" class="btn btn-light" id='shop'>Shop</button>
-    <button type="button" class="btn btn-light" id='play'>Play</button>
-
-  <div class="edit-mode">
-    <textarea id="edit-mode-text">Hit "save" to save your changes</textarea>
-  </div>
-</div>
 
     <div id="map">
       <!-- map goes here -->
