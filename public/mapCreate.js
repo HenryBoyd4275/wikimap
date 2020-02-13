@@ -55,6 +55,8 @@ $("document").ready(function() {
 
   })
 
+  ("section .map-name").hide()
+
   // Renders favourite map when clicking on Favourites dropdown
   // list item
   // $(".dropdown-item ").on("click", function(e) {
@@ -118,7 +120,11 @@ $("document").ready(function() {
     console.log(mapTitle)
   });
 
+
+
   $("#new_map").on("click", function() {
+
+    (".map-name-bar").toggleUp()
 
     editMode = true;
     $.ajax({
