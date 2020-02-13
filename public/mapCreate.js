@@ -9,6 +9,9 @@ let markers_count = 0;
 
 $("document").ready(function() {
 
+  $(".edit-mode").hide()
+  $(".empty-div").hide()
+
   currentMap = 1;
   mapSetup();
 
@@ -23,6 +26,8 @@ $("document").ready(function() {
 
   $("#edit").on("click", function() {
     editMode = true;
+    $(".edit-mode").show()
+    $(".empty-div").show()
   });
 
   $("#favourite").on("click", function() {
@@ -32,13 +37,18 @@ $("document").ready(function() {
       type: "POST",
       data: { currentMap }
     })
-    .then()
+    .then((response) => {
+      $("#dropdownmenufav").append(`<button class="dropdown-item" name="favMaps" onclick="testFunction(${currentMap})" > ${response} </button>`)
+
+    })
     .catch(error => console.log(error))
   })
 
   $("#save").on("click", function() {
     savePoints();
     editMode = false;
+    $(".edit-mode").hide()
+    $(".empty-div").hide()
   });
 
   $("#eat").on("click", function() {
@@ -54,6 +64,8 @@ $("document").ready(function() {
       for (element of response) {
         createMarker(element);
       }
+
+
     });
   });
 
@@ -63,12 +75,21 @@ $("document").ready(function() {
     console.log(mapTitle)
   });
 
+  $(".title-box").keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  })
+
   $("#new_map").on("click", function() {
-
-    (".map-name-bar").toggleUp()
-
+    $(".map-name-bar").slideDown('slow', function() {
+      // Animation complete.
+    });
     editMode = true;
   });
+
+
 
   $("#shop").on("click", function() {
     editMode = false;
@@ -76,7 +97,7 @@ $("document").ready(function() {
     $.ajax({
       url: `/maps/queryPoints`,
       type: "POST",
-      data: {mapId:3}
+      data: {map:3}
     }).then(response => {
       currentMap = response[0].map_id;
       mapSetup(); //reloads the map, clearing the markers
@@ -91,7 +112,7 @@ $("document").ready(function() {
     $.ajax({
       url: `/maps/queryPoints`,
       type: "POST",
-      data: {mapId:4}
+      data: {map:4}
     }).then(response => {
       currentMap = response[0].map_id;
       mapSetup(); //reloads the map, clearing the markers
@@ -128,18 +149,3 @@ $("document").ready(function() {
   });
 });
 
-// move to functions
-function testFunction(e) {
-  editMode = false;
-  $.ajax({
-    url: `/maps/queryPoints`,
-    type: "POST",
-    data: {map: e}
-  }).then(response => {
-    currentMap = response[0].map_id;
-    mapSetup(); //reloads the map, clearing the markers
-    for (element of response) {
-      createMarker(element);
-    }
-  });
-}

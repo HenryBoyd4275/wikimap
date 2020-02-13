@@ -57,6 +57,8 @@ app.get("/", (req, res) => {
   let currentUserId = req.session.userId; //capitalize?
   let currentUser = req.session.username
 
+
+
   const mapsQuery =
   `SELECT * FROM maps`;
 
@@ -67,7 +69,7 @@ app.get("/", (req, res) => {
   WHERE favourite_maps.user_id = ${currentUserId}
   `;
   const ownedMapsQuery = `
-  SELECT maps.title, maps.id
+  SELECT maps.*
   FROM maps
   JOIN users ON owner_id = users.id
   WHERE owner_id = ${currentUserId};

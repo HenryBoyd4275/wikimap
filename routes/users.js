@@ -77,8 +77,8 @@ module.exports = (db) => {
     db.query(`
     SELECT maps.title, maps.id
     FROM maps
-    JOIN favourite_maps ON favourite_maps.user_id = maps.id
-    JOIN users ON maps.id = users.id
+    JOIN favourite_maps ON favourite_maps.map_id = maps.id
+    JOIN users ON maps.viewer_id = users.id
     WHERE users.id = ${currentUser}
     `, [users.id]) // $1 being user cookie
   })

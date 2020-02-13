@@ -60,7 +60,16 @@ module.exports = (db) => {
         db.query(`
         INSERT INTO favourite_maps (user_id, map_id)
         VALUES ($1,$2);
-        `, [`${currentUserId}`, `${req.body.currentMap}`])}).then(() => res.send())
+        `, [`${currentUserId}`, `${req.body.currentMap}`])}).then(() => {
+          db.query(`
+                  SELECT maps.title FROM maps
+                  WHERE maps.id=$1
+                  `, [`${req.body.currentMap}`]).then(response => {
+                    mapTitle=response.rows[0].title
+                    res.send(mapTitle)
+                  }).catch(error => console.log("error: ", error))
+
+        })
     .catch(error => console.log(error))
     }
   })

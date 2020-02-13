@@ -28,7 +28,7 @@ let savePoints = function() {
     description: m.description,
     image_url: m.imgURL
   }));
-  
+
   $.ajax({
     url: `/maps/save`,
     type: "POST",
@@ -223,6 +223,21 @@ function CenterControl(controlDiv, map) {
     map.setCenter(toronto);
   });
 
+}
+
+function redirectByMapID(mapID) {
+  editMode = false;
+  $.ajax({
+    url: `/maps/queryPoints`,
+    type: "POST",
+    data: {map: mapID}
+  }).then(response => {
+    currentMap = response[0].map_id;
+    mapSetup(); //reloads the map, clearing the markers
+    for (element of response) {
+      createMarker(element);
+    }
+  });
 }
 
 
