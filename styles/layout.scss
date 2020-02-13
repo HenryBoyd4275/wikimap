@@ -11,6 +11,11 @@ $accentColor:#81008F;
 .navbar{
   background-color: $mainColor;
   width: 100%;
+  display:flex;
+}
+
+#user-info{
+  justify-content: right !important;
 }
 
 #map{

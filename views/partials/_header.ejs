@@ -3,6 +3,7 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
         <div class="btn-group">
@@ -35,7 +36,7 @@
         <div class="btn-group">
           <li class="nav-item dropdown"></li>
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Owned
+            My Maps
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
             <% for (let ownedMap of ownedMapList){ %>
@@ -46,6 +47,8 @@
         </div>
       <% } %>
       </li>
+    </ul>
+      <div id='user-info'>
       <div class="collapse navbar-collapse ml-auto login">
         <% if(currentUser){ %>
           <%= currentUser %>
@@ -60,6 +63,10 @@
         <a class="nav-item nav-link" href="/user/register">Register</a>
         <% } %>
       </div>
-    </ul>
+      </div>
+
+
   </div>
+</div>
+
 </nav>
