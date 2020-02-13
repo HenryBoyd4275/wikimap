@@ -67,8 +67,9 @@ module.exports = (db) => {
 
   router.post("/queryPoints", (req, res) => {
 
-    database.getMapPoints(req.body.mapId)    // arg is the ID of the map
-    .then(coords=> {
+
+    database.getMapPoints(req.body.map)    // arg is the ID of the map
+    .then(coords=> {      
       res.send(coords)
     })
   })
@@ -99,11 +100,10 @@ module.exports = (db) => {
     }
   })
 
-  router.post("/:id/destroy", (req, res) => {
-    db.query(`
-    DELETE from 'maps'
-    WHERE id = $1
-    `, [`${req.params}`])
+  // should this stay?
+  router.get("/id/:id", (req, res) => {
+    database.getMapPoints(req.params.id)
+    .then(results => res.render("index", results))
   })
 
   return router;

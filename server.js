@@ -54,13 +54,48 @@ app.use("/maps", mapsRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
+  let mapList;
+  let favouriteMapList;
+  let ownedMapList;
+  let currentUserId = req.session.userId; //capitalize?
+  let currentUser = req.session.username
 
 
-    let currentUser = req.session.username;
-    let pass2FrontEnd = {currentUser} // "templateVars"
-    res.render("index", pass2FrontEnd);   // pass to front end.
+  const mapsQuery =
+  `SELECT * FROM maps`
 
-});
+  const favouriteMapsQuery = `
+  SELECT maps.title, maps.id
+  FROM maps
+  JOIN favourite_maps ON favourite_maps.map_id = maps.id
+  WHERE favourite_maps.user_id = ${currentUserId}
+  `
+  const ownedMapsQuery = `
+  SELECT *
+  FROM maps
+  JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
+  JOIN users ON owner_id = users.id
+  WHERE users.id = ${currentUserId};
+  `
+
+  let queries = [db.query(mapsQuery)]
+  if (currentUser) {
+
+    queries.push(db.query(favouriteMapsQuery), db.query(ownedMapsQuery))
+  }
+  Promise.all(queries)
+  .then( results => {
+    let mapList = results[0].rows
+    let favouriteMapList = results[1].rows
+    let ownedMapList = results[2].rows
+
+    res.render("index", {mapList, favouriteMapList, ownedMapList, currentUser, currentUserId});   // pass to front end.
+  })
+
+  .catch((error) => console.log(error))
+
+ })
+
 
 app.listen(PORT, () => {
   console.log(`Wikimap listening on port ${PORT}`);

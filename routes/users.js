@@ -12,7 +12,7 @@ module.exports = (db) => {
 
   const loginCheck = function (user) {
     return db.query(`
-    SELECT name
+    SELECT *
     FROM users
     WHERE name = $1;
     `, [`${user.username}`])
@@ -30,12 +30,14 @@ module.exports = (db) => {
       res.send("Please enter a username");
     }
 
+    // check if user exists, and pass along name and id cookies
     loginCheck(username)
     .then( user => {
       if(!user) {
         res.redirect("/");
       }
       req.session.username = user.name;
+      req.session.userId = user.id
       res.redirect("/");
     }).catch(error => console.log("error: ", error))
    });
@@ -67,6 +69,30 @@ module.exports = (db) => {
         .json({ error: err.message });
     });
     res.redirect("/")
+  })
+
+  //should render favourite maps for user
+  //NOTE: this is different than "favouriting the map" in maps.js
+  router.get("/favourites", (req, res) => {
+    db.query(`
+    SELECT maps.title, maps.id
+    FROM maps
+    JOIN favourite_maps ON favourite_maps.user_id = maps.viewer_id
+    JOIN users ON maps.viewer_id = users.id
+    WHERE users.id = ${currentUser}
+    `, [users.id]) // $1 being user cookie
+  })
+
+  router.get("/owned", (req, res) => {
+    const username = req.session.username
+    console.log(username)
+    db.query(`
+    SELECT maps.*
+    FROM maps
+    JOIN favourite_maps ON favourite_maps.user_id = maps.owner_id
+    JOIN users ON owner_id = users.id;
+    WHERE users.id = ${username};
+    `, [users.id]) // $1 being user cookie
   })
 
   return router;

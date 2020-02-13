@@ -8,7 +8,6 @@ INSERT INTO maps (owner_id, title) VALUES
 
 INSERT INTO points (map_id, title, description, image_url, lat, lng)
 VALUES
-
 (1, 'Super Secret base', 'Super Secret Base', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTj-gukAJDQAauw4YK26t8MuLNPAITYCMiP9w-mLU5vBzqYCii_', 43.71372346993974, -79.5111477678760),
 (1, 'Secret base', 'Secret Base', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSj6expPawMUV4Hpg1sqaV2Pp3s6kjy3IxSy53j4OhzI5kRD1Uk', 43.760903540859, -79.372445375),
 (1, 'Secret Lair', 'Secret Lair', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-qLIMDv2Lgf6i_iwuzpVrZnjiTqUuIk2OHRs6Ojw33mD3c1uK', 43.717743153380, -79.405404359),

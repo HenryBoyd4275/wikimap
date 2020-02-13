@@ -6,6 +6,7 @@ let currentMap;
 let markers = {};
 let markers_count = 0;
 
+
 $("document").ready(function() {
   currentMap = 1;
   mapSetup();
@@ -18,6 +19,7 @@ $("document").ready(function() {
       createMarker(point);
     }
   });
+
   $("#edit").on("click", function() {
     editMode = true;
   });
@@ -43,7 +45,8 @@ $("document").ready(function() {
     $.ajax({
       url: `/maps/queryPoints`,
       type: "POST",
-      data: {mapId:2}
+      data: {map: 2}
+
     }).then(response => {
       currentMap = response[0].map_id;
       mapSetup(); //reloads the map, clearing the markers
@@ -52,8 +55,23 @@ $("document").ready(function() {
       }
     });
   });
+
+  $("#submit-map").on("click", function(e) {
+    e.preventDefault();
+    mapTitle=$(".title-box").val()
+    console.log(mapTitle)
+  });
+
+  $("#new_map").on("click", function() {
+
+    (".map-name-bar").toggleUp()
+
+    editMode = true;
+  });
+   
   $("#shop").on("click", function() {
     editMode = false;
+
     $.ajax({
       url: `/maps/queryPoints`,
       type: "POST",
@@ -83,9 +101,6 @@ $("document").ready(function() {
   });
 
 
-
-
-
   $("#submit-map").on("click", function(e) {
     e.preventDefault();
     mapTitle = $(".title-box").val();
@@ -111,3 +126,20 @@ $("document").ready(function() {
     $(".title-box").focus();
   });
 });
+
+// move to functions
+function testFunction(e) {
+  editMode = false;
+  $.ajax({
+    url: `/maps/queryPoints`,
+    type: "POST",
+    data: {map: e}
+  }).then(response => {
+    currentMap = response[0].map_id;
+    mapSetup(); //reloads the map, clearing the markers
+    for (element of response) {
+      createMarker(element);
+    }
+  });
+}
+
