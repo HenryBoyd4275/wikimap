@@ -5,12 +5,17 @@ $mainColor:Grey;
 $accentColor:#81008F;
 
 body{
+  font-family: 'Noto Sans', sans-serif;
   background-color: $mainColor;
 }
 
 .nav {
   background-color: $mainColor;
   width: 100%;
+}
+
+#logoutBttn {
+  padding-left:10px
 }
 
 .navbar{
