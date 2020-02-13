@@ -1,15 +1,19 @@
 // See: https://sass-lang.com/
 
-$mainColor:#C4AD4A;
+$mainColor:Grey;
 
 $accentColor:#81008F;
 
-.body{
+body{
+  background-color: $mainColor;
+}
+
+.nav {
   background-color: $mainColor;
 }
 
 .navbar{
-  background-color: $mainColor;
+  background-color: $mainColor !important;
   height: 7vh;
 }
 
