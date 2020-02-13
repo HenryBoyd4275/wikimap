@@ -9,6 +9,9 @@ let markers_count = 0;
 
 $("document").ready(function() {
 
+  $(".edit-mode").hide()
+  $(".empty-div").hide()
+
   currentMap = 1;
   mapSetup();
 
@@ -23,6 +26,8 @@ $("document").ready(function() {
 
   $("#edit").on("click", function() {
     editMode = true;
+    $(".edit-mode").show()
+    $(".empty-div").show()
   });
 
   $("#favourite").on("click", function() {
@@ -42,6 +47,8 @@ $("document").ready(function() {
   $("#save").on("click", function() {
     savePoints();
     editMode = false;
+    $(".edit-mode").hide()
+    $(".empty-div").hide()
   });
 
   $("#eat").on("click", function() {
