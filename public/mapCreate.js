@@ -277,6 +277,16 @@ function deletePoint(marker_id){
 }
 
 function testFunction(e) {
-  // e.preventDefault();
-  console.log(e)
+  editMode = false;
+  $.ajax({
+    url: `/maps/queryPoints`,
+    type: "POST",
+    data: {map: e}
+  }).then(response => {
+    currentMap = response[0].map_id;
+    mapSetup(); //reloads the map, clearing the markers
+    for (element of response) {
+      createMarker(element);
+    }
+  });
 }
