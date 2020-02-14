@@ -14,6 +14,7 @@ body{
 .btn{
   background-color: $accentColor;
   border-color: $accentColor;
+
 }
 
 .button-group-container{
@@ -75,6 +76,11 @@ body{
     height: 67vh;
     width: 100%;
   }
+}
+
+#map{
+  border-bottom: solid 3px;
+  border-top: solid 3px;
 }
 
 h1{

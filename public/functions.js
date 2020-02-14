@@ -5,9 +5,8 @@ let toronto = { lat: 43.7042, lng: -79.4022 };
 let mapSetup = function() {
   markers = {};
   markers_count = 0;
-  console.log("3cMap in setup: ", currentMap);
   initMap();
-  addListener();
+  addListeners();
 
   //change the title html element to match current map title
   $.ajax({
@@ -124,7 +123,7 @@ function createMarker(coords) {
 }
 
 //adds listener for click when we enter edit mode
-function addListener(action) {
+function addListeners(action) {
   const addHandler = function(event) {
     if (editMode) {
       createMarker(event.latLng);

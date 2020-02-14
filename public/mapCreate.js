@@ -23,29 +23,33 @@ $("document").ready(function() {
 
   $("#edit").on("click", function() {
     editMode = true;
-    $(".edit-mode").show()
-    $(".empty-div").show()
+
   });
 
-  $("#favourite").on("click", function() {
 
+  $("#favourite").on("click", function() {
     $.ajax({
       url: "/maps/favourite",
       type: "POST",
       data: { currentMap }
     })
     .then((response) => {
-      $("#dropdownmenufav").append(`<button class="dropdown-item" name="favMaps" onclick="testFunction(${currentMap})" > ${response} </button>`)
+      $("#dropdownmenufav").append(`<button class="dropdown-item" name="favMaps" onclick="redirectByMapID(${currentMap})" > ${response} </button>`)
 
     })
     .catch(error => console.log(error))
   })
 
+
   $("#save").on("click", function() {
+    if(Object.keys(markers).length===0){
+
+      window.alert("Please Add A Point before Saving.");
+
+    } else{
     savePoints();
     editMode = false;
-    $(".edit-mode").hide()
-    $(".empty-div").hide()
+    }
   });
 
   $("#eat").on("click", function() {
@@ -61,8 +65,6 @@ $("document").ready(function() {
       for (element of response) {
         createMarker(element);
       }
-
-
     });
   });
 
