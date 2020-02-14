@@ -1,3 +1,4 @@
+
 //global map vars
 let map;
 let editMode = false;
@@ -16,7 +17,7 @@ $("document").ready(function() {
     url: `/maps/initalmap`,
     type: "GET"
   }).then(response => {
-    for (point of response) {
+    for (let point of response) {
       createMarker(point);
     }
   });
@@ -68,11 +69,7 @@ $("document").ready(function() {
     });
   });
 
-  $("#submit-map").on("click", function(e) {
-    e.preventDefault();
-    mapTitle=$(".title-box").val()
-    console.log(mapTitle)
-  });
+
 
   $(".title-box").keydown(function(event){
     if(event.keyCode == 13) {
@@ -136,6 +133,11 @@ $("document").ready(function() {
     })
       .then(response => {
         currentMap = response.id;
+
+        $("#dropdownmenuowned").append(`<button class="dropdown-item" name="favMaps" onclick="redirectByMapID(${response.id})" > ${mapTitle} </button>`)
+
+        $("#dropdownmenuall").append(`<button class="dropdown-item" name="favMaps" onclick="redirectByMapID(${response.id})" > ${mapTitle} </button>`)
+
       })
       .then(() => {
         mapSetup();

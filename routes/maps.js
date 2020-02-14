@@ -11,6 +11,16 @@ const router  = express.Router();
 
 module.exports = (db) => {
 
+  // router.get("/count", (req, res) => {
+  //   db.query(`
+  //   SELECT count(*)
+  //   FROM MAPS
+  //   `).then(response => {
+  //     newMapID=parseInt(response.rows[0].count)+1
+  //     res.send(newMapID)
+  //   })
+  // });
+
   router.post("/save", (req, res) => {
     if(req.body.markerArray){
       db.query(`

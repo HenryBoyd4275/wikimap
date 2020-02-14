@@ -12,7 +12,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               All Maps
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <div id="dropdownmenuall" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <% for (let map of mapList){ %>
               <button class="dropdown-item" name="allMaps" onclick="redirectByMapID(<%= map.id %>)" ><%- map.title %></button>
               <% } %>
@@ -39,7 +39,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             My Maps
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+          <div id="dropdownmenuowned" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
             <% for (let ownedMap of ownedMapList){ %>
             <button class="dropdown-item" name="ownedMaps" onclick="redirectByMapID(<%= ownedMap.id %>)" ><%- ownedMap.title %></button>
             <% } %>
