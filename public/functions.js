@@ -1,5 +1,5 @@
 
-let toronto = { lat: 43.6442, lng: -79.4022 };
+let toronto = { lat: 43.7042, lng: -79.4022 };
 
 //Function that consolidates map setup functions
 let mapSetup = function() {
@@ -21,6 +21,7 @@ let mapSetup = function() {
 
 //saves the current map points into the DB. needs to also save the map title
 let savePoints = function() {
+
   let markerArray = Object.values(markers).map(m => ({
     lat: m.position.lat(),
     lng: m.position.lng(),
@@ -28,6 +29,8 @@ let savePoints = function() {
     description: m.description,
     image_url: m.imgURL
   }));
+
+  console.log(markerArray)
 
   $.ajax({
     url: `/maps/save`,
@@ -43,7 +46,7 @@ let savePoints = function() {
 
 function initMap() {
   let options = {
-    zoom: 10,
+    zoom: 11,
     center: toronto,
     styles: darkMode
   };
@@ -97,7 +100,7 @@ function createMarker(coords) {
       <div class='info-title'><h6>${coords.title}</h6></div>
       <div class='desc-img'>
       <h8>${coords.description}</h8>
-      <img src="${coords.image_url}" alt="no img" height="45" width="52">
+      <img src="${coords.image_url}" alt="no img" height="60" width="60">
       </div></div>
       <br>
       <button onClick="deletePoint(${marker_id})" type="button" form="delete" value="Submit" class='submit'>Delete</button>
@@ -156,7 +159,7 @@ function insertFormHTML(arr, marker_id) {
   <div class='info-title'><h6>${arr[0]}</h6></div>
   <div class='desc-img'>
   <span class='desc'><p>${arr[1]}</p></span>
-  <img src="${arr[2]}" alt="no img" height="52" width="52">
+  <img src="${arr[2]}" alt="no img" height="60" width="60">
   </div><br>
   <button onClick="deletePoint(${marker_id})" type="submit" form="form1" value="Submit" class='submit'>Deletes</button>
   <button onClick="insertTextFields(event)" type="button" form="delete" value="Submit" class='submit'>Edit</button>

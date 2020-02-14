@@ -1,22 +1,54 @@
 // See: https://sass-lang.com/
 
-$mainColor:Grey;
+$mainColor: #cae9ff;
 
-$accentColor:#81008F;
+$accentColor: #62b6cb;
+
+$featureColor: #1b4965;
 
 
 body{
-  background-color: $mainColor;
+  background-color: $mainColor
+}
+
+.btn{
+  background-color: $accentColor;
+  border-color: $accentColor;
+}
+
+.button-group-container{
+  justify-content: flex-end
+}
+
+#username{
+  color: $mainColor;
+  font-family: 'Noto Sans', sans-serif;
+  padding-right: 2em;
+  padding-left: 1em;
 }
 
 .nav {
   background-color: $mainColor;
   width: 100%;
+  display: flex;
+}
+
+#user-info{
+  justify-content: right !important;
+}
+
+#logoutBttn {
+  padding-left:10px
 }
 
 .navbar{
-  background-color: $mainColor !important;
+  background-color: $featureColor!important;
   height: 7vh;
+  width: 100%;
+}
+
+.navbar-nav{
+  display: flex;
 }
 
 @media only screen and (max-width: 420px) {
@@ -38,7 +70,7 @@ h1{
 }
 
 .button-bar{
-  background-color: $accentColor;
+  background-color: $mainColor;
   padding-top:10px;
   padding-bottom:10px;
   height: 3.5em;
@@ -66,7 +98,6 @@ h1{
   word-wrap: break-word;
 }
 
-
 .desc-img{
   display: flex;
   justify-content: space-between;
@@ -81,9 +112,6 @@ h6{
   border-bottom: solid;
 }
 
-.btn-success{
-  background-color: #A09AB3 !important;
-}
 
  /* The Modal (background) */
  .modal {
