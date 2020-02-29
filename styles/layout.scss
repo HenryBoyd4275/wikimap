@@ -1,20 +1,34 @@
 // See: https://sass-lang.com/
 
-$mainColor: #cae9ff;
+$mainColor: rgb(255, 255, 255);
 
-$accentColor: #62b6cb;
+$accentColor: #2c9ee0;
 
-$featureColor: #1b4965;
+$featureColor: #062436;
 
 
 body{
-  background-color: $mainColor
-}
+  background-color: #fafafa;
+  background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */}
 
 .btn{
   background-color: $accentColor;
   border-color: $accentColor;
 
+}
+
+#Title{
+  margin-bottom:0px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  background-color: #fafafa;
+background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+}
+.help_text{
+  color:whitesmoke;
+  padding-left: 15px;
 }
 
 .button-group-container{
@@ -67,7 +81,7 @@ body{
 
 @media only screen and (max-width: 420px) {
   #map{
-    height: 80vh;
+    height: 85vh;
     width: 100%;
   }
 }
@@ -89,7 +103,9 @@ h1{
 }
 
 .button-bar{
-  background-color: $mainColor;
+  background-color: #fafafa;
+  background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   padding-top:10px;
   padding-bottom:10px;
   height: 3.5em;
